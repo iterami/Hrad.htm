@@ -1,0 +1,9 @@
+a{
+    color:#00f;
+    cursor:pointer;
+    text-decoration:underline
+}
+.column{
+    display:inline-block;
+    padding-right:20px
+}
