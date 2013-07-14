@@ -1,55 +1,57 @@
 function day(){
-    /* if day is not over, continue. else end day */
+    // if day is not over, continue. else end day
     if(daylight_passed < 5){
-        /* if day just started, clear previous days events and change start-day link to text */
+        // if day just started, clear previous days events and change start-day link to text
         if(daylight_passed === 0){
             get('day-events').innerHTML = '';
             get('start-day').innerHTML = 'Day Progressing...';
         }
 
-        /* generate random event value */
+        // generate random event value
         i = Math.random();
 
         if(i < .72){
-            /* no event */
+            // no event
             i = '-----';
 
         }else if(i < .78){
-            /* food event */
+            // food event
 
-            /* generate how much food */
+            // generate how much food
             j = random_number(2);
 
             if(Math.random() < .5){
-                /* food lost */
+                // food lost
                 food -= j;
 
                 if(food < 0){
-                    /* lose 2 gold per food under 0 */
+                    // lose 2 gold per food under 0
                     gold += food * 2;
                     food = 0;
                 }
 
                 i = '-';
+
             }else{
-                /* food gained */
+                // food gained
                 food += j;
                 i = '+';
             }
             i += j + ' Food';
 
         }else if(i < .84){
-            /* gold event */
+            // gold event
 
-            /* generate how much gold */
+            // generate how much gold
             j = random_number(2);
 
             if(Math.random() < .5){
-                /* lose gold */
+                // lose gold
                 gold -= j;
                 i = '-';
+
             }else{
-                /* gain gold */
+                // gain gold
                 gold += j;
                 i = '+';
             }
@@ -57,40 +59,41 @@ function day(){
             i += j + ' Gold';
 
         }else if(i < .9){
-            /* stone event */
+            // stone event
 
-            /* generate how much stone */
+            // generate how much stone
             j = random_number(2);
 
             if(Math.random() < .5){
-                /* lose stone */
+                // lose stone
                 stone -= j;
 
                 if(stone < 0){
-                    /* lose 2 gold per stone under 0 */
+                    // lose 2 gold per stone under 0
                     gold += stone * 2;
                     stone = 0;
                 }
 
                 i = '-';
+
             }else{
-                /* gain stone */
+                // gain stone
                 stone += j;
                 i = '+';
             }
             i += j + ' Stone';
 
         }else if(i < .96){
-            /* population event */
+            // population event
 
             if(Math.random() < .5){
-                /* lose people */
+                // lose people
                 if(people > 0){
                     people -= 1;
 
-                    /* if no workers are unemployed */
+                    // if no workers are unemployed
                     if(unemployed_workers < 1){
-                        /* decrease people workers first */
+                        // decrease people workers first
                         if(people_workers > 0){
                             people_bonus -= 1;
                             get('people-bonus').innerHTML = people_workers;
@@ -98,7 +101,7 @@ function day(){
                             people_workers -= 1;
                             get('people-workers').innerHTML = people_workers;
 
-                        /* if no people workers, decrease stone workers */
+                        // if no people workers, decrease stone workers
                         }else if(stone_workers > 0){
                             stone_bonus -= 1;
                             get('stone-bonus').innerHTML = stone_workers;
@@ -106,7 +109,7 @@ function day(){
                             stone_workers -= 1;
                             get('stone-workers').innerHTML = stone_workers;
 
-                        /* if no stone workers, decrease gold workers */
+                        // if no stone workers, decrease gold workers
                         }else if(gold_workers > 0){
                             gold_bonus -= 1;
                             get('gold-bonus').innerHTML = gold_workers;
@@ -114,13 +117,13 @@ function day(){
                             gold_workers -= 1;
                             get('gold-workers').innerHTML = gold_workers;
 
-                        /* if no gold workers, decrease food workers */
+                        // if no gold workers, decrease food workers
                         }else{
                             food_workers -= 1;
                             get('food-workers').innerHTML = food_workers;
                         }
 
-                    /* else decrease unemployed workers */
+                    // else decrease unemployed workers
                     }else{
                         unemployed_workers -= 1;
                     }
@@ -128,30 +131,31 @@ function day(){
                 i = '-';
 
             }else{
-                /* gain people */
+                // gain people
                 people += 1;
                 unemployed_workers += 1;
                 i = '+';
             }
 
-            /* update food bonus based on current population */
+            // update food bonus based on current population
             food_bonus = food_workers * 2 - people;
 
             i += '1 Population';
 
         }else if(i < .99){
-            /* other events, not yet implemented */
+            // other events, not yet implemented
             j = random_number(2);
             if(j === 0){
                 i = 'Battle Event (NYI)';
+
             }else{
                 i = 'Other Event (NYI)';
             }
 
         }else{
-            /* resource bonus event */
+            // resource bonus event
 
-            /* generate which resource */
+            // generate which resource
             j = random_number(4);
 
             if(j === 0){
@@ -177,27 +181,27 @@ function day(){
             }
         }
 
-        /* add event to list of day-events */
+        // add event to list of day-events
         get('day-events').innerHTML += i + '<br>';
 
-        /* more daylight has passed */
+        // more daylight has passed
         daylight_passed += 1;
 
-        /* if day is not over, wait 600ms for next event */
+        // if day is not over, wait 600ms for next event
         if(daylight_passed < 5){
             setTimeout('day()', 600);
 
-        /* otherwise move on */
+        // otherwise move on
         }else{
             day();
         }
 
     }else{
-        /* end day */
+        // end day
         block_unload = 1;
         daylight_passed = 0;
 
-        /* update resources with daily bonuses */
+        // update resources with daily bonuses
         food += food_bonus;
         food_bonus -= people_bonus;
         gold += gold_bonus;
@@ -205,9 +209,9 @@ function day(){
         stone += stone_bonus;
         unemployed_workers += people_bonus;
 
-        /* calculate if there is not enough food to feed population */
+        // calculate if there is not enough food to feed population
         if(food + food_bonus < people){
-            /* if not enough food, decrease population and workers */
+            // if not enough food, decrease population and workers
             people -= people - food + food_bonus;
             unemployed_workers -= people - food + food_bonus;
 
@@ -215,18 +219,18 @@ function day(){
                 people = 0;
             }
 
-            /* update new food_bonus */
+            // update new food_bonus
             food_bonus += people - food + food_bonus;
             food = 0;
         }
 
-        /* update start-day text with start new day or game over message */
-        get('start-day').innerHTML = people > 0 ?
-            '<a onclick="day()">Start New Day</a>' :
-            'Your Castle Has Fallen. :(<br><a onclick="new_game()">Start Over</a>';
+        // update start-day text with start new day or game over message
+        get('start-day').innerHTML = people > 0
+            ? '<a onclick="day()">Start New Day</a>'
+            : 'Your Castle Has Fallen. :(<br><a onclick="new_game()">Start Over</a>';
     }
 
-    /* update text displays */
+    // update text displays
     get('food').innerHTML = food;
     get('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
     get('gold').innerHTML = gold;
@@ -236,11 +240,11 @@ function day(){
 }
 
 function distribute_workers(resource,amount){
-    /* positive amount = decrease workers, negative amount = increase workers */
+    // positive amount = decrease workers, negative amount = increase workers
 
-    /* if a day is not in progress and there are either unemployed workers or workers being decreased */
+    // if a day is not in progress and there are either unemployed workers or workers being decreased
     if(daylight_passed === 0 && (unemployed_workers > 0 || amount < 0)){
-        /* alter food workers */
+        // alter food workers
         if(resource === 0){
             if(food_workers > 0 || amount > 0){
                 unemployed_workers -= amount;
@@ -254,7 +258,7 @@ function distribute_workers(resource,amount){
             get('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
             get('food-workers').innerHTML = food_workers;
 
-        /* alter gold workers */
+        // alter gold workers
         }else if(resource === 1){
             if(gold_workers > 0 || amount > 0){
                 unemployed_workers -= amount;
@@ -268,7 +272,7 @@ function distribute_workers(resource,amount){
             get('gold-bonus').innerHTML = gold_workers;
             get('gold-workers').innerHTML = gold_workers;
 
-        /* alter people workers */
+        // alter people workers
         }else if(resource === 2){
             if(people_workers > 0 || amount > 0){
                 unemployed_workers -= amount;
@@ -282,7 +286,7 @@ function distribute_workers(resource,amount){
             get('people-bonus').innerHTML = people_workers;
             get('people-workers').innerHTML = people_workers;
 
-        /* alter stone workers */
+        // alter stone workers
         }else{
             if(stone_workers > 0 || amount > 0){
                 unemployed_workers -= amount;
@@ -321,7 +325,7 @@ function new_game(){
     stone_workers = 0;
     unemployed_workers = 1;
 
-    /* reset all text displays */
+    // reset all text displays
     get('food').innerHTML = food;
     get('food-bonus').innerHTML = food_bonus;
     get('food-workers').innerHTML = food_workers;
@@ -363,14 +367,14 @@ var stone_workers = 0;
 var unemployed_workers = 1;
 
 window.onbeforeunload = function(){
-    /* warn players if they have already made progress */
+    // warn players if they have already made progress
     if(block_unload && people > 0){
-        return'Save feature will be implemented in the future.';
+        return 'Save feature will be implemented in the future.';
     }
 };
 
 window.onkeydown = function(e){
-    /* if new day can be started, any key will start it */
+    // if new day can be started, any key will start it
     if(daylight_passed === 0 && people > 0){
         day();
     }
