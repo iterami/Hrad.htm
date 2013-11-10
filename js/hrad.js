@@ -96,25 +96,25 @@ function day(){
                         // decrease people workers first
                         if(people_workers > 0){
                             people_bonus -= 1;
-                            get('people-bonus').innerHTML = people_workers;
-
                             people_workers -= 1;
+
+                            get('people-bonus').innerHTML = people_workers;
                             get('people-workers').innerHTML = people_workers;
 
                         // if no people workers, decrease stone workers
                         }else if(stone_workers > 0){
                             stone_bonus -= 1;
-                            get('stone-bonus').innerHTML = stone_workers;
-
                             stone_workers -= 1;
+
+                            get('stone-bonus').innerHTML = stone_workers;
                             get('stone-workers').innerHTML = stone_workers;
 
                         // if no stone workers, decrease gold workers
                         }else if(gold_workers > 0){
                             gold_bonus -= 1;
-                            get('gold-bonus').innerHTML = gold_workers;
-
                             gold_workers -= 1;
+
+                            get('gold-bonus').innerHTML = gold_workers;
                             get('gold-workers').innerHTML = gold_workers;
 
                         // if no gold workers, decrease food workers
