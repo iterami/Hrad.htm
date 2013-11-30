@@ -3,6 +3,11 @@ function day(){
     if(daylight_passed < 5){
         // if day just started, clear previous days events and change start-day link to text
         if(daylight_passed === 0){
+            interval_value = get('day-duration').value;
+            if(isNaN(interval_value) || interval_value <= 0){
+                interval_value = 600;
+            }
+
             get('day-events').innerHTML = '';
             get('start-day').innerHTML = 'Day Progressing...';
         }
@@ -30,12 +35,12 @@ function day(){
                     food = 0;
                 }
 
-                i = '-';
+                i = 'Bugs! -';
 
             }else{
                 // food gained
                 food += j;
-                i = '+';
+                i = 'Rain! +';
             }
             i += j + ' Food';
 
@@ -48,12 +53,12 @@ function day(){
             if(Math.random() < .5){
                 // lose gold
                 gold -= j;
-                i = '-';
+                i = 'Theives! -';
 
             }else{
                 // gain gold
                 gold += j;
-                i = '+';
+                i = 'Mining! +';
             }
 
             i += j + ' Gold';
@@ -74,12 +79,12 @@ function day(){
                     stone = 0;
                 }
 
-                i = '-';
+                i = 'Repair! -';
 
             }else{
                 // gain stone
                 stone += j;
-                i = '+';
+                i = 'Mining! +';
             }
             i += j + ' Stone';
 
@@ -128,13 +133,13 @@ function day(){
                         unemployed_workers -= 1;
                     }
                 }
-                i = '-';
+                i = 'Sickness! -';
 
             }else{
                 // gain people
                 people += 1;
                 unemployed_workers += 1;
-                i = '+';
+                i = 'Recruitment! +';
             }
 
             // update food bonus based on current population
@@ -159,22 +164,22 @@ function day(){
             j = random_number(4);
 
             if(j === 0){
-                i = '+1 Food/day';
+                i = 'Seeds! +1 Food/day';
                 food_bonus += 1;
                 get('food-bonus').innerHTML = food_bonus;
 
             }else if(j === 1){
-                i = '+1 Gold/day';
+                i = 'Veins! +1 Gold/day';
                 gold_bonus += 1;
                 get('gold-bonus').innerHTML = gold_bonus;
 
             }else if(j === 2){
-                i = '+1 Population/day';
+                i = 'Popularity! +1 Population/day';
                 people_bonus += 1;
                 get('people-bonus').innerHTML = people_bonus;
 
             }else{
-                i = '+1 Stone/day';
+                i = 'Rocks! +1 Stone/day';
                 stone_bonus += 1;
                 get('stone-bonus').innerHTML = stone_bonus;
 
@@ -187,9 +192,13 @@ function day(){
         // more daylight has passed
         daylight_passed += 1;
 
-        // if day is not over, wait 600ms for next event
+        // if day is not over, wait interval_value ms for next event
+        // interval_value is set by the day-duration input field
         if(daylight_passed < 5){
-            setTimeout('day()', 600);
+            setTimeout(
+                'day()',
+                interval_value
+            );
 
         // otherwise move on
         }else{
@@ -357,6 +366,7 @@ var gold = 0;
 var gold_bonus = 0;
 var gold_workers = 0;
 var i = 0;
+var interval_value = 0;
 var j = 0;
 var people = 1;
 var people_bonus = 0;
@@ -374,8 +384,11 @@ window.onbeforeunload = function(){
 };
 
 window.onkeydown = function(e){
-    // if new day can be started, any key will start it
-    if(daylight_passed === 0 && people > 0){
+    var key = window.event ? event : e;
+    key = key.charCode ? key.charCode : key.keyCode;
+
+    // if new day can be started, any key except for integer keys will start it
+    if(daylight_passed === 0 && people > 0 && (key < 48 || key > 57)){
         day();
     }
 }
