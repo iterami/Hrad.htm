@@ -95,43 +95,7 @@ function day(){
                 // lose people
                 if(people > 0){
                     people -= 1;
-
-                    // if no workers are unemployed
-                    if(unemployed_workers < 1){
-                        // decrease people workers first
-                        if(people_workers > 0){
-                            people_bonus -= 1;
-                            people_workers -= 1;
-
-                            get('people-bonus').innerHTML = people_workers;
-                            get('people-workers').innerHTML = people_workers;
-
-                        // if no people workers, decrease stone workers
-                        }else if(stone_workers > 0){
-                            stone_bonus -= 1;
-                            stone_workers -= 1;
-
-                            get('stone-bonus').innerHTML = stone_workers;
-                            get('stone-workers').innerHTML = stone_workers;
-
-                        // if no stone workers, decrease gold workers
-                        }else if(gold_workers > 0){
-                            gold_bonus -= 1;
-                            gold_workers -= 1;
-
-                            get('gold-bonus').innerHTML = gold_workers;
-                            get('gold-workers').innerHTML = gold_workers;
-
-                        // if no gold workers, decrease food workers
-                        }else{
-                            food_workers -= 1;
-                            get('food-workers').innerHTML = food_workers;
-                        }
-
-                    // else decrease unemployed workers
-                    }else{
-                        unemployed_workers -= 1;
-                    }
+                    delete_people(0);
                 }
                 i = 'Sickness! -';
 
@@ -219,19 +183,20 @@ function day(){
         unemployed_workers += people_bonus;
 
         // calculate if there is not enough food to feed population
-        if(food + food_bonus < people){
+        if(food + food_bonus < 0){
             // if not enough food, decrease population and workers
-            people -= people - food + food_bonus;
-            unemployed_workers -= people - food + food_bonus;
+            delete_people(people - 1);
+            people -= people - (food + food_bonus);
 
             if(people < 0){
                 people = 0;
             }
 
             // update new food_bonus
-            food_bonus += people - food + food_bonus;
             food = 0;
+            food_bonus = -1;
         }
+        console.log('here')
 
         // update start-day text with start new day or game over message
         get('start-day').innerHTML = people > 0
@@ -246,6 +211,47 @@ function day(){
     get('people').innerHTML = people;
     get('stone').innerHTML = stone;
     get('unemployed-workers').innerHTML = unemployed_workers;
+}
+
+function delete_people(count){
+    do{
+        // if no workers are unemployed
+        if(unemployed_workers < 1){
+            // decrease people workers first
+            if(people_workers > 0){
+                people_bonus -= 1;
+                people_workers -= 1;
+
+                get('people-bonus').innerHTML = people_workers;
+                get('people-workers').innerHTML = people_workers;
+
+            // if no people workers, decrease stone workers
+            }else if(stone_workers > 0){
+                stone_bonus -= 1;
+                stone_workers -= 1;
+
+                get('stone-bonus').innerHTML = stone_workers;
+                get('stone-workers').innerHTML = stone_workers;
+
+            // if no stone workers, decrease gold workers
+            }else if(gold_workers > 0){
+                gold_bonus -= 1;
+                gold_workers -= 1;
+
+                get('gold-bonus').innerHTML = gold_workers;
+                get('gold-workers').innerHTML = gold_workers;
+
+            // if no gold workers, decrease food workers
+            }else{
+                food_workers -= 1;
+                get('food-workers').innerHTML = food_workers;
+            }
+
+        // else decrease unemployed workers
+        }else{
+            unemployed_workers -= 1;
+        }
+    }while(count--);
 }
 
 function distribute_workers(resource,amount){
@@ -278,7 +284,7 @@ function distribute_workers(resource,amount){
                 gold_workers = 0;
 
             }
-            get('gold-bonus').innerHTML = gold_workers;
+            get('gold-bonus').innerHTML = gold_bonus;
             get('gold-workers').innerHTML = gold_workers;
 
         // alter people workers
@@ -292,7 +298,7 @@ function distribute_workers(resource,amount){
                 people_workers = 0;
             }
 
-            get('people-bonus').innerHTML = people_workers;
+            get('people-bonus').innerHTML = people_bonus;
             get('people-workers').innerHTML = people_workers;
 
         // alter stone workers
@@ -306,7 +312,7 @@ function distribute_workers(resource,amount){
                 stone_workers = 0;
             }
 
-            get('stone-bonus').innerHTML = stone_workers;
+            get('stone-bonus').innerHTML = stone_bonus;
             get('stone-workers').innerHTML = stone_workers;
         }
         get('unemployed-workers').innerHTML = unemployed_workers;
