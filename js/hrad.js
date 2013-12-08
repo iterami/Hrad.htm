@@ -194,9 +194,8 @@ function day(){
 
             // update new food_bonus
             food = 0;
-            food_bonus = -1;
+            food_bonus = 0;
         }
-        console.log('here')
 
         // update start-day text with start new day or game over message
         get('start-day').innerHTML = people > 0
