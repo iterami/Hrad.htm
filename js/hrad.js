@@ -3,25 +3,24 @@ function day(){
     if(daylight_passed < 5){
         // if day just started, clear previous days events and change start-day link to text
         if(daylight_passed === 0){
-            interval_value = get('day-duration').value;
+            interval_value = document.getElementById('day-duration').value;
             if(isNaN(interval_value) || interval_value <= 0){
                 interval_value = 600;
             }
 
-            get('day-events').innerHTML = '';
-            get('start-day').innerHTML = 'Day Progressing...';
+            document.getElementById('day-events').innerHTML = '';
+            document.getElementById('start-day').innerHTML = 'Day Progressing...';
         }
 
         // generate random event value
         i = Math.random();
 
+        // no event
         if(i < .72){
-            // no event
             i = '-----';
 
+        // food event
         }else if(i < .78){
-            // food event
-
             // generate how much food
             j = random_number(2);
 
@@ -44,9 +43,8 @@ function day(){
             }
             i += j + ' Food';
 
+        // gold event
         }else if(i < .84){
-            // gold event
-
             // generate how much gold
             j = random_number(2);
 
@@ -63,9 +61,8 @@ function day(){
 
             i += j + ' Gold';
 
+        // stone event
         }else if(i < .9){
-            // stone event
-
             // generate how much stone
             j = random_number(2);
 
@@ -88,9 +85,8 @@ function day(){
             }
             i += j + ' Stone';
 
+        // population event
         }else if(i < .96){
-            // population event
-
             if(Math.random() < .5){
                 // lose people
                 if(people > 0){
@@ -111,8 +107,8 @@ function day(){
 
             i += '1 Population';
 
+        // other events, not yet implemented
         }else if(i < .99){
-            // other events, not yet implemented
             j = random_number(2);
             if(j === 0){
                 i = 'Battle Event (NYI)';
@@ -121,37 +117,36 @@ function day(){
                 i = 'Other Event (NYI)';
             }
 
+        // resource bonus event
         }else{
-            // resource bonus event
-
             // generate which resource
             j = random_number(4);
 
             if(j === 0){
                 i = 'Seeds! +1 Food/day';
                 food_bonus += 1;
-                get('food-bonus').innerHTML = food_bonus;
+                document.getElementById('food-bonus').innerHTML = food_bonus;
 
             }else if(j === 1){
                 i = 'Veins! +1 Gold/day';
                 gold_bonus += 1;
-                get('gold-bonus').innerHTML = gold_bonus;
+                document.getElementById('gold-bonus').innerHTML = gold_bonus;
 
             }else if(j === 2){
                 i = 'Popularity! +1 Population/day';
                 people_bonus += 1;
-                get('people-bonus').innerHTML = people_bonus;
+                document.getElementById('people-bonus').innerHTML = people_bonus;
 
             }else{
                 i = 'Rocks! +1 Stone/day';
                 stone_bonus += 1;
-                get('stone-bonus').innerHTML = stone_bonus;
+                document.getElementById('stone-bonus').innerHTML = stone_bonus;
 
             }
         }
 
         // add event to list of day-events
-        get('day-events').innerHTML += i + '<br>';
+        document.getElementById('day-events').innerHTML += i + '<br>';
 
         // more daylight has passed
         daylight_passed += 1;
@@ -198,18 +193,18 @@ function day(){
         }
 
         // update start-day text with start new day or game over message
-        get('start-day').innerHTML = people > 0
+        document.getElementById('start-day').innerHTML = people > 0
             ? '<a onclick="day()">Start New Day</a>'
             : 'Your Castle Has Fallen. :(<br><a onclick="new_game()">Start Over</a>';
     }
 
     // update text displays
-    get('food').innerHTML = food;
-    get('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
-    get('gold').innerHTML = gold;
-    get('people').innerHTML = people;
-    get('stone').innerHTML = stone;
-    get('unemployed-workers').innerHTML = unemployed_workers;
+    document.getElementById('food').innerHTML = food;
+    document.getElementById('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
+    document.getElementById('gold').innerHTML = gold;
+    document.getElementById('people').innerHTML = people;
+    document.getElementById('stone').innerHTML = stone;
+    document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
 }
 
 function delete_people(count){
@@ -221,29 +216,29 @@ function delete_people(count){
                 people_bonus -= 1;
                 people_workers -= 1;
 
-                get('people-bonus').innerHTML = people_workers;
-                get('people-workers').innerHTML = people_workers;
+                document.getElementById('people-bonus').innerHTML = people_workers;
+                document.getElementById('people-workers').innerHTML = people_workers;
 
             // if no people workers, decrease stone workers
             }else if(stone_workers > 0){
                 stone_bonus -= 1;
                 stone_workers -= 1;
 
-                get('stone-bonus').innerHTML = stone_workers;
-                get('stone-workers').innerHTML = stone_workers;
+                document.getElementById('stone-bonus').innerHTML = stone_workers;
+                document.getElementById('stone-workers').innerHTML = stone_workers;
 
             // if no stone workers, decrease gold workers
             }else if(gold_workers > 0){
                 gold_bonus -= 1;
                 gold_workers -= 1;
 
-                get('gold-bonus').innerHTML = gold_workers;
-                get('gold-workers').innerHTML = gold_workers;
+                document.getElementById('gold-bonus').innerHTML = gold_workers;
+                document.getElementById('gold-workers').innerHTML = gold_workers;
 
             // if no gold workers, decrease food workers
             }else{
                 food_workers -= 1;
-                get('food-workers').innerHTML = food_workers;
+                document.getElementById('food-workers').innerHTML = food_workers;
             }
 
         // else decrease unemployed workers
@@ -269,8 +264,8 @@ function distribute_workers(resource,amount){
                 food_workers = 0;
 
             }
-            get('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
-            get('food-workers').innerHTML = food_workers;
+            document.getElementById('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
+            document.getElementById('food-workers').innerHTML = food_workers;
 
         // alter gold workers
         }else if(resource === 1){
@@ -283,8 +278,8 @@ function distribute_workers(resource,amount){
                 gold_workers = 0;
 
             }
-            get('gold-bonus').innerHTML = gold_bonus;
-            get('gold-workers').innerHTML = gold_workers;
+            document.getElementById('gold-bonus').innerHTML = gold_bonus;
+            document.getElementById('gold-workers').innerHTML = gold_workers;
 
         // alter people workers
         }else if(resource === 2){
@@ -297,8 +292,8 @@ function distribute_workers(resource,amount){
                 people_workers = 0;
             }
 
-            get('people-bonus').innerHTML = people_bonus;
-            get('people-workers').innerHTML = people_workers;
+            document.getElementById('people-bonus').innerHTML = people_bonus;
+            document.getElementById('people-workers').innerHTML = people_workers;
 
         // alter stone workers
         }else{
@@ -311,15 +306,11 @@ function distribute_workers(resource,amount){
                 stone_workers = 0;
             }
 
-            get('stone-bonus').innerHTML = stone_bonus;
-            get('stone-workers').innerHTML = stone_workers;
+            document.getElementById('stone-bonus').innerHTML = stone_bonus;
+            document.getElementById('stone-workers').innerHTML = stone_workers;
         }
-        get('unemployed-workers').innerHTML = unemployed_workers;
+        document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
     }
-}
-
-function get(i){
-    return document.getElementById(i);
 }
 
 function new_game(){
@@ -340,22 +331,22 @@ function new_game(){
     unemployed_workers = 1;
 
     // reset all text displays
-    get('food').innerHTML = food;
-    get('food-bonus').innerHTML = food_bonus;
-    get('food-workers').innerHTML = food_workers;
-    get('gold').innerHTML = gold;
-    get('gold-bonus').innerHTML = gold_bonus;
-    get('gold-workers').innerHTML = gold_workers;
-    get('people').innerHTML = people;
-    get('people-bonus').innerHTML = people_bonus;
-    get('people-workers').innerHTML = people_workers;
-    get('stone').innerHTML = stone;
-    get('stone-bonus').innerHTML = stone_bonus;
-    get('stone-workers').innerHTML = stone_workers;
-    get('unemployed-workers').innerHTML = unemployed_workers;
+    document.getElementById('food').innerHTML = food;
+    document.getElementById('food-bonus').innerHTML = food_bonus;
+    document.getElementById('food-workers').innerHTML = food_workers;
+    document.getElementById('gold').innerHTML = gold;
+    document.getElementById('gold-bonus').innerHTML = gold_bonus;
+    document.getElementById('gold-workers').innerHTML = gold_workers;
+    document.getElementById('people').innerHTML = people;
+    document.getElementById('people-bonus').innerHTML = people_bonus;
+    document.getElementById('people-workers').innerHTML = people_workers;
+    document.getElementById('stone').innerHTML = stone;
+    document.getElementById('stone-bonus').innerHTML = stone_bonus;
+    document.getElementById('stone-workers').innerHTML = stone_workers;
+    document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
 
-    get('day-events').innerHTML = '';
-    get('start-day').innerHTML = '<a onclick=day()>Start New Day</a>';
+    document.getElementById('day-events').innerHTML = '';
+    document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day</a>';
 }
 
 function random_number(i){
