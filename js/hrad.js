@@ -4,7 +4,8 @@ function day(){
         // if day just started, clear previous days events and change start-day link to text
         if(daylight_passed === 0){
             interval_value = document.getElementById('day-duration').value;
-            if(isNaN(interval_value) || interval_value <= 0){
+            if(isNaN(interval_value)
+              || interval_value <= 0){
                 interval_value = 600;
             }
 
@@ -194,8 +195,8 @@ function day(){
 
         // update start-day text with start new day or game over message
         document.getElementById('start-day').innerHTML = people > 0
-            ? '<a onclick="day()">Start New Day</a>'
-            : 'Your Castle Has Fallen. :(<br><a onclick="new_game()">Start Over</a>';
+          ? '<a onclick="day()">Start New Day</a>'
+          : 'Your Castle Has Fallen. :(<br><a onclick="new_game()">Start Over</a>';
     }
 
     // update text displays
@@ -252,10 +253,12 @@ function distribute_workers(resource,amount){
     // positive amount = decrease workers, negative amount = increase workers
 
     // if a day is not in progress and there are either unemployed workers or workers being decreased
-    if(daylight_passed === 0 && (unemployed_workers > 0 || amount < 0)){
+    if(daylight_passed === 0
+      && (unemployed_workers > 0 || amount < 0)){
         // alter food workers
         if(resource === 0){
-            if(food_workers > 0 || amount > 0){
+            if(food_workers > 0
+              || amount > 0){
                 unemployed_workers -= amount;
                 food_bonus += amount * 2;
                 food_workers += amount;
@@ -269,7 +272,8 @@ function distribute_workers(resource,amount){
 
         // alter gold workers
         }else if(resource === 1){
-            if(gold_workers > 0 || amount > 0){
+            if(gold_workers > 0
+              || amount > 0){
                 unemployed_workers -= amount;
                 gold_bonus += amount;
                 gold_workers += amount;
@@ -283,7 +287,8 @@ function distribute_workers(resource,amount){
 
         // alter people workers
         }else if(resource === 2){
-            if(people_workers > 0 || amount > 0){
+            if(people_workers > 0
+              || amount > 0){
                 unemployed_workers -= amount;
                 people_bonus += amount;
                 people_workers += amount;
@@ -297,7 +302,8 @@ function distribute_workers(resource,amount){
 
         // alter stone workers
         }else{
-            if(stone_workers > 0 || amount > 0){
+            if(stone_workers > 0
+              || amount > 0){
                 unemployed_workers -= amount;
                 stone_bonus += amount;
                 stone_workers += amount;
@@ -374,7 +380,8 @@ var unemployed_workers = 1;
 
 window.onbeforeunload = function(){
     // warn players if they have already made progress
-    if(block_unload && people > 0){
+    if(block_unload
+      && people > 0){
         return 'Save feature will be implemented in the future.';
     }
 };
@@ -384,7 +391,9 @@ window.onkeydown = function(e){
     key = key.charCode ? key.charCode : key.keyCode;
 
     // if new day can be started, any key except for integer keys will start it
-    if(daylight_passed === 0 && people > 0 && (key < 48 || key > 57)){
+    if(daylight_passed === 0
+      && people > 0
+      && (key < 48 || key > 57)){
         day();
     }
 }
