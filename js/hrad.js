@@ -13,21 +13,24 @@ function day(){
             document.getElementById('start-day').innerHTML = 'Day Progressing...';
         }
 
+        var output = '';
+
         // generate random event value
-        i = Math.random();
+        var event = Math.random();
+        var event_result = 0;
 
         // no event
-        if(i < .72){
-            i = '-----';
+        if(event < .72){
+            output = '-----';
 
         // food event
-        }else if(i < .78){
+        }else if(event < .78){
             // generate how much food
-            j = random_number(2);
+            event_result = random_number(2);
 
             if(Math.random() < .5){
                 // food lost
-                food -= j;
+                food -= event_result;
 
                 if(food < 0){
                     // lose 2 gold per food under 0
@@ -35,41 +38,41 @@ function day(){
                     food = 0;
                 }
 
-                i = 'Bugs! -';
+                output = 'Bugs! -';
 
             }else{
                 // food gained
-                food += j;
-                i = 'Rain! +';
+                food += event_result;
+                output = 'Rain! +';
             }
-            i += j + ' Food';
+            output += event_result + ' Food';
 
         // gold event
-        }else if(i < .84){
+        }else if(event < .84){
             // generate how much gold
-            j = random_number(2);
+            event_result = random_number(2);
 
             if(Math.random() < .5){
                 // lose gold
-                gold -= j;
-                i = 'Theives! -';
+                gold -= event_result;
+                output = 'Theives! -';
 
             }else{
                 // gain gold
-                gold += j;
-                i = 'Mining! +';
+                gold += event_result;
+                output = 'Mining! +';
             }
 
-            i += j + ' Gold';
+            output += event_result + ' Gold';
 
         // stone event
-        }else if(i < .9){
+        }else if(event < .9){
             // generate how much stone
-            j = random_number(2);
+            event_result = random_number(2);
 
             if(Math.random() < .5){
                 // lose stone
-                stone -= j;
+                stone -= event_result;
 
                 if(stone < 0){
                     // lose 2 gold per stone under 0
@@ -77,69 +80,69 @@ function day(){
                     stone = 0;
                 }
 
-                i = 'Repair! -';
+                output = 'Repair! -';
 
             }else{
                 // gain stone
-                stone += j;
-                i = 'Mining! +';
+                stone += event_result;
+                output = 'Mining! +';
             }
-            i += j + ' Stone';
+            output += event_result + ' Stone';
 
         // population event
-        }else if(i < .96){
+        }else if(event < .96){
             if(Math.random() < .5){
                 // lose people
                 if(people > 0){
                     people -= 1;
                     delete_people(0);
                 }
-                i = 'Sickness! -';
+                output = 'Sickness! -';
 
             }else{
                 // gain people
                 people += 1;
                 unemployed_workers += 1;
-                i = 'Recruitment! +';
+                output = 'Recruitment! +';
             }
 
             // update food bonus based on current population
             food_bonus = food_workers * 2 - people;
 
-            i += '1 Population';
+            output += '1 Population';
 
         // other events, not yet implemented
-        }else if(i < .99){
-            j = random_number(2);
-            if(j === 0){
-                i = 'Battle Event (NYI)';
+        }else if(event < .99){
+            event_result = random_number(2);
+            if(event_result === 0){
+                output = 'Battle Event (NYI)';
 
             }else{
-                i = 'Other Event (NYI)';
+                output = 'Other Event (NYI)';
             }
 
         // resource bonus event
         }else{
             // generate which resource
-            j = random_number(4);
+            event_result = random_number(4);
 
-            if(j === 0){
-                i = 'Seeds! +1 Food/day';
+            if(event_result === 0){
+                output = 'Seeds! +1 Food/day';
                 food_bonus += 1;
                 document.getElementById('food-bonus').innerHTML = food_bonus;
 
-            }else if(j === 1){
-                i = 'Veins! +1 Gold/day';
+            }else if(event_result === 1){
+                output = 'Veins! +1 Gold/day';
                 gold_bonus += 1;
                 document.getElementById('gold-bonus').innerHTML = gold_bonus;
 
-            }else if(j === 2){
-                i = 'Popularity! +1 Population/day';
+            }else if(event_result === 2){
+                output = 'Popularity! +1 Population/day';
                 people_bonus += 1;
                 document.getElementById('people-bonus').innerHTML = people_bonus;
 
             }else{
-                i = 'Rocks! +1 Stone/day';
+                output = 'Rocks! +1 Stone/day';
                 stone_bonus += 1;
                 document.getElementById('stone-bonus').innerHTML = stone_bonus;
 
@@ -147,7 +150,8 @@ function day(){
         }
 
         // add event to list of day-events
-        document.getElementById('day-events').innerHTML += i + '<br>';
+        document.getElementById('day-events').innerHTML +=
+          output + '<br>';
 
         // more daylight has passed
         daylight_passed += 1;
@@ -156,8 +160,8 @@ function day(){
         // interval_value is set by the day-duration input field
         if(daylight_passed < 5){
             setTimeout(
-                'day()',
-                interval_value
+              'day()',
+              interval_value
             );
 
         // otherwise move on
@@ -367,9 +371,7 @@ var food_workers = 0;
 var gold = 0;
 var gold_bonus = 0;
 var gold_workers = 0;
-var i = 0;
 var interval_value = 0;
-var j = 0;
 var people = 1;
 var people_bonus = 0;
 var people_workers = 0;
