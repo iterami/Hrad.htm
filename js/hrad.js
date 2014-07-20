@@ -26,7 +26,7 @@ function day(){
         // food event
         }else if(event < .78){
             // generate how much food
-            event_result = random_number(2);
+            event_result = Math.floor(Math.random() * 2) + 1;
 
             if(Math.random() < .5){
                 // food lost
@@ -50,7 +50,7 @@ function day(){
         // gold event
         }else if(event < .84){
             // generate how much gold
-            event_result = random_number(2);
+            event_result = Math.floor(Math.random() * 2) + 1;
 
             if(Math.random() < .5){
                 // lose gold
@@ -68,7 +68,7 @@ function day(){
         // stone event
         }else if(event < .9){
             // generate how much stone
-            event_result = random_number(2);
+            event_result = Math.floor(Math.random() * 2) + 1;
 
             if(Math.random() < .5){
                 // lose stone
@@ -113,7 +113,7 @@ function day(){
 
         // other events, not yet implemented
         }else if(event < .99){
-            event_result = random_number(2);
+            event_result = Math.floor(Math.random() * 2);
             if(event_result === 0){
                 output = 'Battle Event (NYI)';
 
@@ -124,7 +124,7 @@ function day(){
         // resource bonus event
         }else{
             // generate which resource
-            event_result = random_number(4);
+            event_result = Math.floor(Math.random() * 4);
 
             if(event_result === 0){
                 output = 'Seeds! +1 Food/day';
@@ -357,10 +357,6 @@ function new_game(){
 
     document.getElementById('day-events').innerHTML = '';
     document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day</a>';
-}
-
-function random_number(i){
-    return Math.floor(Math.random() * i) + 1;
 }
 
 var block_unload = 0;
