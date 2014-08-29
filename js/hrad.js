@@ -394,4 +394,4 @@ window.onkeydown = function(e){
       && (key < 48 || key > 57)){
         day();
     }
-}
+};
