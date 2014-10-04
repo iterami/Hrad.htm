@@ -1,7 +1,14 @@
 a{
-    color: #00f;
+    color: #4c4;
     cursor: pointer;
     text-decoration: underline;
+}
+a:hover{
+    color: #777;
+}
+body{
+    background: #000;
+    color: #aaa;
 }
 .column{
     display: inline-block;
