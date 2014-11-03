@@ -217,41 +217,38 @@ function day(){
 
 function delete_people(count){
     do{
-        // If no workers are unemployed...
-        if(unemployed_workers < 1){
-            // Decrease people workers first.
-            if(people_workers > 0){
-                people_bonus -= 1;
-                people_workers -= 1;
-
-                document.getElementById('people-bonus').innerHTML = people_workers;
-                document.getElementById('people-workers').innerHTML = people_workers;
-
-            // If no people workers, decrease stone workers.
-            }else if(stone_workers > 0){
-                stone_bonus -= 1;
-                stone_workers -= 1;
-
-                document.getElementById('stone-bonus').innerHTML = stone_workers;
-                document.getElementById('stone-workers').innerHTML = stone_workers;
-
-            // If no stone workers, decrease gold workers.
-            }else if(gold_workers > 0){
-                gold_bonus -= 1;
-                gold_workers -= 1;
-
-                document.getElementById('gold-bonus').innerHTML = gold_workers;
-                document.getElementById('gold-workers').innerHTML = gold_workers;
-
-            // If no gold workers, decrease food workers.
-            }else{
-                food_workers -= 1;
-                document.getElementById('food-workers').innerHTML = food_workers;
-            }
-
-        // ...else decrease unemployed workers.
-        }else{
+        // Decrease unemployed workers first.
+        if(unemployed_workers > 0){
             unemployed_workers -= 1;
+
+        // If no unemployed workers, decrease people workers.
+        }else if(people_workers > 0){
+            people_bonus -= 1;
+            people_workers -= 1;
+
+            document.getElementById('people-bonus').innerHTML = people_workers;
+            document.getElementById('people-workers').innerHTML = people_workers;
+
+        // If no people workers, decrease stone workers.
+        }else if(stone_workers > 0){
+            stone_bonus -= 1;
+            stone_workers -= 1;
+
+            document.getElementById('stone-bonus').innerHTML = stone_workers;
+            document.getElementById('stone-workers').innerHTML = stone_workers;
+
+        // If no stone workers, decrease gold workers.
+        }else if(gold_workers > 0){
+            gold_bonus -= 1;
+            gold_workers -= 1;
+
+            document.getElementById('gold-bonus').innerHTML = gold_workers;
+            document.getElementById('gold-workers').innerHTML = gold_workers;
+
+        // If no gold workers, decrease food workers.
+        }else{
+            food_workers -= 1;
+            document.getElementById('food-workers').innerHTML = food_workers;
         }
     }while(count--);
 }
@@ -260,103 +257,110 @@ function distribute_workers(resource, amount){
     // Positive amount = decrease workers.
     // Negative amount = increase workers.
 
-    // If a day is not in progress and there are either unemployed workers or workers being decreased...
-    if(daylight_passed === 0
-      && (unemployed_workers > 0 || amount < 0)){
-        // ...alter food workers...
-        if(resource === 0){
-            if(food_workers > 0
-              || amount > 0){
-                unemployed_workers -= amount;
-                food_bonus += amount * 2;
-                food_workers += amount;
-
-            }else{
-                food_workers = 0;
-
-            }
-            document.getElementById('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
-            document.getElementById('food-workers').innerHTML = food_workers;
-
-        // ..or alter gold workers...
-        }else if(resource === 1){
-            if(gold_workers > 0
-              || amount > 0){
-                unemployed_workers -= amount;
-                gold_bonus += amount;
-                gold_workers += amount;
-
-            }else{
-                gold_workers = 0;
-
-            }
-            document.getElementById('gold-bonus').innerHTML = gold_bonus;
-            document.getElementById('gold-workers').innerHTML = gold_workers;
-
-        // ...or alter people workers...
-        }else if(resource === 2){
-            if(people_workers > 0
-              || amount > 0){
-                unemployed_workers -= amount;
-                people_bonus += amount;
-                people_workers += amount;
-
-            }else{
-                people_workers = 0;
-            }
-
-            document.getElementById('people-bonus').innerHTML = people_bonus;
-            document.getElementById('people-workers').innerHTML = people_workers;
-
-        // ...or alter stone workers.
-        }else{
-            if(stone_workers > 0
-              || amount > 0){
-                unemployed_workers -= amount;
-                stone_bonus += amount;
-                stone_workers += amount;
-
-            }else{
-                stone_workers = 0;
-            }
-
-            document.getElementById('stone-bonus').innerHTML = stone_bonus;
-            document.getElementById('stone-workers').innerHTML = stone_workers;
-        }
-        document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
+    // Return if a day is in progress
+    //   or there are no unemployed workers and workers are being increased.
+    if(daylight_passed > 0
+      || (unemployed_workers <= 0 && amount > 0)){
+        return;
     }
+
+    // Alter food workers...
+    if(resource === 0){
+        if(food_workers > 0
+          || amount > 0){
+            unemployed_workers -= amount;
+            food_bonus += amount * 2;
+            food_workers += amount;
+
+        }else{
+            food_workers = 0;
+        }
+
+        document.getElementById('food-bonus').innerHTML = (food_bonus >= 0 ? '+' : '') + food_bonus;
+        document.getElementById('food-workers').innerHTML = food_workers;
+
+    // ..or alter gold workers...
+    }else if(resource === 1){
+        if(gold_workers > 0
+          || amount > 0){
+            unemployed_workers -= amount;
+            gold_bonus += amount;
+            gold_workers += amount;
+
+        }else{
+            gold_workers = 0;
+        }
+
+        document.getElementById('gold-bonus').innerHTML = gold_bonus;
+        document.getElementById('gold-workers').innerHTML = gold_workers;
+
+    // ...or alter people workers...
+    }else if(resource === 2){
+        if(people_workers > 0
+          || amount > 0){
+            unemployed_workers -= amount;
+            people_bonus += amount;
+            people_workers += amount;
+
+        }else{
+            people_workers = 0;
+        }
+
+        document.getElementById('people-bonus').innerHTML = people_bonus;
+        document.getElementById('people-workers').innerHTML = people_workers;
+
+    // ...or alter stone workers.
+    }else{
+        if(stone_workers > 0
+          || amount > 0){
+            unemployed_workers -= amount;
+            stone_bonus += amount;
+            stone_workers += amount;
+
+        }else{
+            stone_workers = 0;
+        }
+
+        document.getElementById('stone-bonus').innerHTML = stone_bonus;
+        document.getElementById('stone-workers').innerHTML = stone_workers;
+    }
+
+    document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
 }
 
 function new_game(){
     block_unload = 0;
     daylight_passed = 0;
+
     food = 10;
     food_bonus = -1;
     food_workers = 0;
-    gold = 0;
-    gold_bonus = 0;
-    gold_workers = 0;
-    people = 1;
-    people_bonus = 0;
-    people_workers = 0;
-    stone = 0;
-    stone_bonus = 0;
-    stone_workers = 0;
-    unemployed_workers = 1;
-
-    // Reset all text displays.
     document.getElementById('food').innerHTML = food;
     document.getElementById('food-bonus').innerHTML = food_bonus;
     document.getElementById('food-workers').innerHTML = food_workers;
+
+    gold = 0;
+    gold_bonus = 0;
+    gold_workers = 0;
     document.getElementById('gold').innerHTML = gold;
     document.getElementById('gold-bonus').innerHTML = gold_bonus;
     document.getElementById('gold-workers').innerHTML = gold_workers;
+
+    people = 1;
+    people_bonus = 0;
+    people_workers = 0;
     document.getElementById('people').innerHTML = people;
     document.getElementById('people-bonus').innerHTML = people_bonus;
     document.getElementById('people-workers').innerHTML = people_workers;
+
+    stone = 0;
+    stone_bonus = 0;
+    stone_workers = 0;
     document.getElementById('stone').innerHTML = stone;
     document.getElementById('stone-bonus').innerHTML = stone_bonus;
     document.getElementById('stone-workers').innerHTML = stone_workers;
+
+    unemployed_workers = 1;
     document.getElementById('unemployed-workers').innerHTML = unemployed_workers;
 
     document.getElementById('day-events').innerHTML = '';
