@@ -393,8 +393,7 @@ window.onbeforeunload = function(){
 };
 
 window.onkeydown = function(e){
-    var key = window.event ? event : e;
-    key = key.charCode ? key.charCode : key.keyCode;
+    var key = e.keyCode || e.which;
 
     // If new day can be started, any key except for integer keys will start it.
     if(daylight_passed === 0
