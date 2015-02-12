@@ -402,3 +402,5 @@ window.onkeydown = function(e){
         day();
     }
 };
+
+window.onload = new_game;
