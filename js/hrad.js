@@ -163,7 +163,7 @@ function day(){
         // If day is not over, wait interval_value ms for next event,
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
-            setTimeout(
+            window.setTimeout(
               'day()',
               interval_value
             );
