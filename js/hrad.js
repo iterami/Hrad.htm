@@ -1,3 +1,5 @@
+'use strict';
+
 function day(){
     // If day is not over, continue.
     if(daylight_passed < 5){
