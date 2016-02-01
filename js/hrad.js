@@ -166,7 +166,7 @@ function day(){
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
             window.setTimeout(
-              'day()',
+              day,
               interval_value
             );
 
