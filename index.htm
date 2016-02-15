@@ -3,37 +3,10 @@
 <title>Hrad.htm</title>
 <link href=css/hrad.css rel=stylesheet>
 
-<div class=column>
-    <b>Resource</b><br>
-    Food<br>
-    Gold<br>
-    Population<br>
-    Stone
-</div>
-
-<div class=column>
-    <b>Amount</b><br>
-    <span id=food></span><br>
-    <span id=gold></span><br>
-    <span id=people></span><br>
-    <span id=stone></span>
-</div>
-
-<div class=column>
-    <b>Bonus/Day</b><br>
-    <span id=food-bonus></span><br>
-    +<span id=gold-bonus></span><br>
-    +<span id=people-bonus></span><br>
-    +<span id=stone-bonus></span>
-</div>
-
-<div class=column>
-    <b>Workers</b> (<span id=unemployed-workers></span>)<br>
-    <span id=food-workers></span> (<a onclick="distribute_workers(0, 1)">+</a>/<a onclick="distribute_workers(0, -1)">—</a>)<br>
-    <span id=gold-workers></span> (<a onclick="distribute_workers(1, 1)">+</a>/<a onclick="distribute_workers(1, -1)">—</a>)<br>
-    <span id=people-workers></span> (<a onclick="distribute_workers(2, 1)">+</a>/<a onclick="distribute_workers(2, -1)">—</a>)<br>
-    <span id=stone-workers></span> (<a onclick="distribute_workers(3, 1)">+</a>/<a onclick="distribute_workers(3, -1)">—</a>)
-</div>
+<div class=column id=resource><b>Resource</b></div>
+<div class=column id=amount><b>Amount</b></div>
+<div class=column id=bonus><b>Bonus/Day</b></div>
+<div class=column id=workers><b>Workers</b> (<span id=unemployed-workers></span>)</div>
 
 <hr>
 
