@@ -8,3 +8,8 @@ A text-based castle management game in which you manage resources, assign worker
 Action        | Key
 --------------|----------------
 Start New Day | Any Non-Integer
+
+---
+
+Requires:
+* [iterami/common](https://github.com/iterami/common)

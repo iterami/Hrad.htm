@@ -1,20 +1,17 @@
 <!doctype html>
 <meta charset=utf-8>
 <title>Hrad.htm</title>
-<link href=css/hrad.css rel=stylesheet>
+<link href=../common/css/dom.css rel=stylesheet>
 
-<div class=column id=resource><b>Resource</b></div>
-<div class=column id=amount><b>Amount</b></div>
-<div class=column id=bonus><b>Bonus/Day</b></div>
-<div class=column id=workers><b>Workers</b> (<span id=unemployed-workers></span>)</div>
-
+<div class=inline id=resource><b>Resource</b></div>
+<div class=inline id=amount><b>Amount</b></div>
+<div class=inline id=bonus><b>Bonus/Day</b></div>
+<div class=inline id=workers><b>Workers</b> (<span id=unemployed-workers></span>)</div>
 <hr>
-
 <div id=start-day>
     <a onclick=day()>Start New Day</a>
 </div>
  <input id=day-duration value=600>ms
-
 <div id=day-events></div>
 
 <script src=js/hrad.js></script>
