@@ -31,7 +31,7 @@ function day(){
             // Generate food value for this event.
             event_result = Math.floor(Math.random() * 2) + 1;
 
-            if(Math.random() < .5){
+            if(random_boolean()){
                 // Food lost.
                 resources['food']['amount'] -= event_result;
 
@@ -55,7 +55,7 @@ function day(){
             // Generate gold value for this event.
             event_result = Math.floor(Math.random() * 2) + 1;
 
-            if(Math.random() < .5){
+            if(random_boolean()){
                 // Lose gold, negative gold OK.
                 resources['gold']['amount'] -= event_result;
                 output = 'Theives! -';
@@ -73,7 +73,7 @@ function day(){
             // Generate stone value for this event.
             event_result = Math.floor(Math.random() * 2) + 1;
 
-            if(Math.random() < .5){
+            if(random_boolean()){
                 // Lose stone.
                 resources['stone']['amount'] -= event_result;
 
@@ -94,7 +94,7 @@ function day(){
 
         // Population event.
         }else if(event < .96){
-            if(Math.random() < .5){
+            if(random_boolean()){
                 // Lose person.
                 if(resources['people']['amount'] > 0){
                     resources['people']['amount'] -= 1;
@@ -116,7 +116,7 @@ function day(){
 
         // Other events, not yet implemented.
         }else if(event < .99){
-            event_result = Math.floor(Math.random() * 2);
+            event_result = random_integer(2);
             if(event_result === 0){
                 output = 'Battle Event (NYI)';
 
@@ -127,7 +127,7 @@ function day(){
         // Daily resource bonus event.
         }else{
             // Generate which resource will have daily bonus increased.
-            event_result = Math.floor(Math.random() * 4);
+            event_result = random_integer(4);
 
             // Food daily bonus increase.
             if(event_result === 0){
