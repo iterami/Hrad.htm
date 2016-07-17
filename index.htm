@@ -3,15 +3,15 @@
 <title>Hrad.htm</title>
 <link href=../common/css/dom.css rel=stylesheet>
 
-<div class=inline id=resource><b>Resource</b></div>
-<div class=inline id=amount><b>Amount</b></div>
-<div class=inline id=bonus><b>Bonus/Day</b></div>
-<div class=inline id=workers><b>Workers</b> (<span id=unemployed-workers></span>)</div>
+<div class=inline id=resource></div>
+<div class=inline id=amount></div>
+<div class=inline id=bonus></div>
+<div class=inline id=workers></div>
 <hr>
-<div id=start-day>
-    <a onclick=day()>Start New Day</a>
-</div>
- <input id=day-duration value=600>ms
+<div id=start-day></div>
+<input id=day-duration>ms
 <div id=day-events></div>
 
+<script src=../common/js/input.js></script>
+<script src=../common/js/settings.js></script>
 <script src=js/hrad.js></script>

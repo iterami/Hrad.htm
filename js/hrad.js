@@ -1,14 +1,15 @@
 'use strict';
 
 function day(){
+    settings_save();
+
     // If day is not over, continue.
     if(daylight_passed < 5){
         // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
-            interval_value = document.getElementById('day-duration').value;
-            if(isNaN(interval_value)
-              || interval_value <= 0){
-                interval_value = 600;
+            if(isNaN(settings_settings['day-duration'])
+              || settings_settings['day-duration'] <= 0){
+                settings_settings['day-duration'] = 600;
             }
 
             document.getElementById('day-events').innerHTML = '';
@@ -162,12 +163,12 @@ function day(){
         // More daylight has passed.
         daylight_passed += 1;
 
-        // If day is not over, wait interval_value ms for next event,
+        // If day is not over, wait settings_settings['day-duration'] ms for next event,
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
             window.setTimeout(
               day,
-              interval_value
+              settings_settings['day-duration']
             );
 
         // Otherwise end the current day.
@@ -334,6 +335,11 @@ function new_game(){
     block_unload = 0;
     daylight_passed = 0;
 
+    document.getElementById('amount').innerHTML = '<b>Amount</b>';
+    document.getElementById('bonus').innerHTML = '<b>Bonus/Day</b>';
+    document.getElementById('resource').innerHTML = '<b>Resource</b>';
+    document.getElementById('workers').innerHTML = '<b>Workers</b> (<span id=unemployed-workers></span>)';
+
     var counter = 0;
     for(var resource in resource_defaults){
         document.getElementById('amount').innerHTML += '<br><span id=' + resource + '></span>';
@@ -364,7 +370,6 @@ function new_game(){
 
 var block_unload = 0;
 var daylight_passed = 0;
-var interval_value = 0;
 var resource_defaults = {
   'food': {
     'amount': 10,
@@ -398,15 +403,26 @@ window.onbeforeunload = function(){
     }
 };
 
-window.onkeydown = function(e){
-    var key = e.keyCode || e.which;
+window.onload = function(e){
+    input_init(
+      {
+        72: {
+          'todo': function(){
+              if(daylight_passed === 0
+                && resources['people']['amount'] > 0){
+                  day();
+              }
+          },
+        },
+      }
+    );
+    settings_init(
+      'Hrad.htm-',
+      {
+        'day-duration': 600,
+      }
+    );
 
-    // If new day can be started, any key except for integer keys will start it.
-    if(daylight_passed === 0
-      && resources['people']['amount'] > 0
-      && (key < 48 || key > 57)){
-        day();
-    }
+    settings_update();
+    new_game();
 };
-
-window.onload = new_game;
