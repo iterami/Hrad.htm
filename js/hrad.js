@@ -416,12 +416,12 @@ window.onload = function(e){
         },
       }
     );
-    settings_init(
-      'Hrad.htm-',
-      {
+    settings_init({
+      'prefix': 'Hrad.htm-',
+      'settings': {
         'day-duration': 600,
-      }
-    );
+      },
+    });
 
     settings_update();
     new_game();
