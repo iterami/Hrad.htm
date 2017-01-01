@@ -116,7 +116,9 @@ function day(){
 
         // Other events, not yet implemented.
         }else if(event < .99){
-            event_result = random_integer(2);
+            event_result = random_integer({
+              'max': 2,
+            });
             if(event_result === 0){
                 output = 'Battle Event (NYI)';
 
@@ -127,7 +129,9 @@ function day(){
         // Daily resource bonus event.
         }else{
             // Generate which resource will have daily bonus increased.
-            event_result = random_integer(4);
+            event_result = random_integer({
+              'max': 4,
+            });
 
             // Food daily bonus increase.
             if(event_result === 0){
