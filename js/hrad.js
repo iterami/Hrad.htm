@@ -209,7 +209,7 @@ function day(){
 
         // Update start-day text with start new day or game over message.
         document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
-          ? '<a onclick=day()>Start New Day</a>'
+          ? '<a onclick=day()>Start New Day (ENTER)</a>'
           : 'Your Castle Has Fallen. :(<br><a onclick=new_game()>Start Over</a>';
     }
 
@@ -369,7 +369,7 @@ function new_game(){
     document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 
     document.getElementById('day-events').innerHTML = '';
-    document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day</a>';
+    document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day (ENTER)</a>';
 }
 
 var block_unload = 0;
@@ -408,9 +408,9 @@ window.onbeforeunload = function(){
 };
 
 window.onload = function(e){
-    input_init(
-      {
-        72: {
+    input_init({
+      'keybinds': {
+        13: {
           'todo': function(){
               if(daylight_passed === 0
                 && resources['people']['amount'] > 0){
@@ -418,8 +418,8 @@ window.onload = function(e){
               }
           },
         },
-      }
-    );
+      },
+    });
     settings_init({
       'prefix': 'Hrad.htm-',
       'settings': {
