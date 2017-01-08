@@ -161,8 +161,7 @@ function day(){
         }
 
         // Add event to list of day-events.
-        document.getElementById('day-events').innerHTML +=
-          output + '<br>';
+        document.getElementById('day-events').innerHTML += output + '<br>';
 
         // More daylight has passed.
         daylight_passed += 1;
@@ -339,10 +338,10 @@ function new_game(){
     block_unload = 0;
     daylight_passed = 0;
 
-    document.getElementById('amount').innerHTML = '<b>Amount</b>';
-    document.getElementById('bonus').innerHTML = '<b>Bonus/Day</b>';
-    document.getElementById('resource').innerHTML = '<b>Resource</b>';
-    document.getElementById('workers').innerHTML = '<b>Workers</b> (<span id=unemployed-workers></span>)';
+    document.getElementById('amount').innerHTML = 'Amount';
+    document.getElementById('bonus').innerHTML = 'Bonus/Day';
+    document.getElementById('resource').innerHTML = 'Resource';
+    document.getElementById('workers').innerHTML = 'Workers (<span id=unemployed-workers></span>)';
 
     var counter = 0;
     for(var resource in resource_defaults){
