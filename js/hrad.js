@@ -398,14 +398,6 @@ var resource_defaults = {
 };
 var resources = {};
 
-window.onbeforeunload = function(){
-    // Warn players if they have already made progress.
-    if(block_unload
-      && resources['people']['amount'] > 0){
-        return 'Save feature will be implemented in the future.';
-    }
-};
-
 window.onload = function(e){
     input_init({
       'keybinds': {
@@ -428,4 +420,12 @@ window.onload = function(e){
 
     settings_update();
     new_game();
+
+    window.onbeforeunload = function(){
+        // Warn players if they have already made progress.
+        if(block_unload
+          && resources['people']['amount'] > 0){
+            return 'Save feature will be implemented in the future.';
+        }
+    };
 };
