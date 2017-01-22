@@ -1,15 +1,15 @@
 'use strict';
 
 function day(){
-    settings_save();
+    storage_save();
 
     // If day is not over, continue.
     if(daylight_passed < 5){
         // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
-            if(isNaN(settings_settings['day-duration'])
-              || settings_settings['day-duration'] <= 0){
-                settings_settings['day-duration'] = 600;
+            if(isNaN(storage_data['day-duration'])
+              || storage_data['day-duration'] <= 0){
+                storage_data['day-duration'] = 600;
             }
 
             document.getElementById('day-events').innerHTML = '';
@@ -166,12 +166,12 @@ function day(){
         // More daylight has passed.
         daylight_passed += 1;
 
-        // If day is not over, wait settings_settings['day-duration'] ms for next event,
+        // If day is not over, wait storage_data['day-duration'] ms for next event,
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
             window.setTimeout(
               day,
-              settings_settings['day-duration']
+              storage_data['day-duration']
             );
 
         // Otherwise end the current day.
@@ -411,14 +411,14 @@ window.onload = function(e){
         },
       },
     });
-    settings_init({
-      'prefix': 'Hrad.htm-',
-      'settings': {
+    storage_init({
+      'data': {
         'day-duration': 600,
       },
+      'prefix': 'Hrad.htm-',
     });
 
-    settings_update();
+    storage_update();
     new_game();
 
     window.onbeforeunload = function(){
