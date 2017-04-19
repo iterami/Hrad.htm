@@ -1,5 +1,38 @@
 'use strict';
 
+// Required args: type
+// Optional args: amount, multiplier
+function alter_workers(args){
+    args = core_args({
+      'args': args,
+      'defaults': {
+        'amount': 1,
+        'multiplier': 1,
+      },
+    });
+
+    if(daylight_passed > 0
+      || (resources['people']['unemployed'] <= 0 && args['amount'] > 0)){
+        return;
+    }
+
+    if(resources[args['type']]['workers'] > 0
+      || args['amount'] > 0){
+        resources['people']['unemployed'] -= args['amount'];
+        resources[args['type']]['bonus'] += args['amount'] * args['multiplier'];
+        resources[args['type']]['workers'] += args['amount'];
+
+    }else{
+        resources[args['type']]['workers'] = 0;
+    }
+
+    document.getElementById(args['type'] + '-bonus').innerHTML =
+      (resources[args['type']]['bonus'] >= 0 ? '+' : '') + resources[args['type']]['bonus'];
+    document.getElementById(args['type'] + '-workers').innerHTML = resources[args['type']]['workers'];
+
+    document.getElementById('unemployed-workers').innerHTML = resources['people']['unemployed'];
+}
+
 function day(){
     storage_save();
 
@@ -258,82 +291,6 @@ function delete_people(count){
     }while(count--);
 }
 
-function distribute_workers(resource, amount){
-    // Positive amount = decrease workers.
-    // Negative amount = increase workers.
-
-    // Return if a day is in progress
-    //   or there are no unemployed workers and workers are being increased.
-    if(daylight_passed > 0
-      || (resources['people']['unemployed'] <= 0 && amount > 0)){
-        return;
-    }
-
-    // Alter food workers...
-    if(resource === 0){
-        if(resources['food']['workers'] > 0
-          || amount > 0){
-            resources['people']['unemployed'] -= amount;
-            resources['food']['bonus'] += amount * 2;
-            resources['food']['workers'] += amount;
-
-        }else{
-            resources['food']['workers'] = 0;
-        }
-
-        document.getElementById('food-bonus').innerHTML =
-          (resources['food']['bonus'] >= 0 ? '+' : '') + resources['food']['bonus'];
-        document.getElementById('food-workers').innerHTML = resources['food']['workers'];
-
-    // ..or alter gold workers...
-    }else if(resource === 1){
-        if(resources['gold']['workers'] > 0
-          || amount > 0){
-            resources['people']['unemployed'] -= amount;
-            resources['gold']['bonus'] += amount;
-            resources['gold']['workers'] += amount;
-
-        }else{
-            resources['gold']['workers'] = 0;
-        }
-
-        document.getElementById('gold-bonus').innerHTML = resources['gold']['bonus'];
-        document.getElementById('gold-workers').innerHTML = resources['gold']['workers'];
-
-    // ...or alter people workers...
-    }else if(resource === 2){
-        if(resources['people']['workers'] > 0
-          || amount > 0){
-            resources['people']['unemployed'] -= amount;
-            resources['people']['bonus'] += amount;
-            resources['people']['workers'] += amount;
-
-        }else{
-            resources['people']['workers'] = 0;
-        }
-
-        document.getElementById('people-bonus').innerHTML = resources['people']['bonus'];
-        document.getElementById('people-workers').innerHTML = resources['people']['workers'];
-
-    // ...or alter stone workers.
-    }else{
-        if(resources['stone']['workers'] > 0
-          || amount > 0){
-            resources['people']['unemployed'] -= amount;
-            resources['stone']['bonus'] += amount;
-            resources['stone']['workers'] += amount;
-
-        }else{
-            resources['stone']['workers'] = 0;
-        }
-
-        document.getElementById('stone-bonus').innerHTML = resources['stone']['bonus'];
-        document.getElementById('stone-workers').innerHTML = resources['stone']['workers'];
-    }
-
-    document.getElementById('unemployed-workers').innerHTML = resources['people']['unemployed'];
-}
-
 function new_game(){
     block_unload = 0;
     daylight_passed = 0;
@@ -351,7 +308,7 @@ function new_game(){
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
-          + '<td><a onclick="distribute_workers(' + counter + ', 1)">+</a>,<a onclick="distribute_workers(' + counter + ', -1)">—</a>';
+          + '<td><a onclick="alter_workers({type:\'' + resource + '\',})">+</a>,<a onclick="alter_workers({amount:-1,type:\'' + resource + '\',})">—</a>';
 
         counter += 1;
         table += tr;
