@@ -1,13 +1,12 @@
 'use strict';
 
 // Required args: type
-// Optional args: amount, multiplier
+// Optional args: amount
 function alter_workers(args){
     args = core_args({
       'args': args,
       'defaults': {
         'amount': 1,
-        'multiplier': 1,
       },
     });
 
@@ -19,7 +18,7 @@ function alter_workers(args){
     if(resources[args['type']]['workers'] > 0
       || args['amount'] > 0){
         resources['people']['unemployed'] -= args['amount'];
-        resources[args['type']]['bonus'] += args['amount'] * args['multiplier'];
+        resources[args['type']]['bonus'] += args['amount'] * (resource_defaults[args['type']]['multiplier'] || 1);
         resources[args['type']]['workers'] += args['amount'];
 
     }else{
@@ -328,6 +327,7 @@ var resource_defaults = {
   'food': {
     'amount': 10,
     'bonus': -1,
+    'multiplier': 2,
     'workers': 0,
   },
   'gold': {
