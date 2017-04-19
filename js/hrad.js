@@ -338,30 +338,23 @@ function new_game(){
     block_unload = 0;
     daylight_passed = 0;
 
-    document.getElementById('amount').innerHTML = 'Amount';
-    document.getElementById('bonus').innerHTML = 'Bonus/Day';
-    document.getElementById('resource').innerHTML = 'Resource';
-    document.getElementById('workers').innerHTML = 'Workers (<span id=unemployed-workers></span>)';
-
     var counter = 0;
+    var table = '';
     for(var resource in resource_defaults){
-        document.getElementById('amount').innerHTML += '<br><span id=' + resource + '></span>';
-        document.getElementById('bonus').innerHTML += '<br><span id=' + resource + '-bonus></span>';
-        document.getElementById('resource').innerHTML += '<br>' + resource;
-        document.getElementById('workers').innerHTML +=
-          '<br><span id=' + resource + '-workers></span> (<a onclick="distribute_workers(' + counter + ', 1)">+</a>/<a onclick="distribute_workers(' + counter + ', -1)">—</a>)';
-
         resources[resource] = resources[resource] || {};
 
         resources[resource]['amount'] = resource_defaults[resource]['amount'];
         resources[resource]['bonus'] = resource_defaults[resource]['bonus'];
         resources[resource]['workers'] = resource_defaults[resource]['workers'];
 
-        document.getElementById(resource).innerHTML = resources[resource]['amount'];
-        document.getElementById(resource + '-bonus').innerHTML = resources[resource]['bonus'];
-        document.getElementById(resource + '-workers').innerHTML = resources[resource]['workers'];
+        var tr = '<tr><td>' + resource
+          + '<td id=' + resource + '>' + resources[resource]['amount']
+          + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
+          + '<td id=' + resource + '-workers>' + resources[resource]['workers']
+          + '<td>(<a onclick="distribute_workers(' + counter + ', 1)">+</a>/<a onclick="distribute_workers(' + counter + ', -1)">—</a>)';
 
         counter += 1;
+        table += tr;
     }
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
@@ -369,6 +362,7 @@ function new_game(){
 
     document.getElementById('day-events').innerHTML = '';
     document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day (ENTER)</a>';
+    document.getElementById('table').innerHTML += table;
 }
 
 var block_unload = 0;
