@@ -351,7 +351,7 @@ function new_game(){
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
-          + '<td>(<a onclick="distribute_workers(' + counter + ', 1)">+</a>/<a onclick="distribute_workers(' + counter + ', -1)">—</a>)';
+          + '<td><a onclick="distribute_workers(' + counter + ', 1)">+</a>,<a onclick="distribute_workers(' + counter + ', -1)">—</a>';
 
         counter += 1;
         table += tr;
