@@ -61,9 +61,11 @@ function day(){
         // Food event.
         }else if(event < .78){
             // Generate food value for this event.
-            event_result = Math.floor(Math.random() * 2) + 1;
+            event_result = core_random_integer({
+              'max': 2,
+            }) + 1;
 
-            if(random_boolean()){
+            if(core_random_boolean()){
                 // Food lost.
                 resources['food']['amount'] -= event_result;
 
@@ -85,9 +87,11 @@ function day(){
         // Gold event.
         }else if(event < .84){
             // Generate gold value for this event.
-            event_result = Math.floor(Math.random() * 2) + 1;
+            event_result = core_random_integer({
+              'max': 2,
+            }) + 1;
 
-            if(random_boolean()){
+            if(core_random_boolean()){
                 // Lose gold, negative gold OK.
                 resources['gold']['amount'] -= event_result;
                 output = 'Theives! -';
@@ -103,9 +107,11 @@ function day(){
         // Stone event.
         }else if(event < .9){
             // Generate stone value for this event.
-            event_result = Math.floor(Math.random() * 2) + 1;
+            event_result = core_random_integer({
+              'max': 2,
+            }) + 1;
 
-            if(random_boolean()){
+            if(core_random_boolean()){
                 // Lose stone.
                 resources['stone']['amount'] -= event_result;
 
@@ -126,7 +132,7 @@ function day(){
 
         // Population event.
         }else if(event < .96){
-            if(random_boolean()){
+            if(core_random_boolean()){
                 // Lose person.
                 if(resources['people']['amount'] > 0){
                     resources['people']['amount'] -= 1;
@@ -148,7 +154,7 @@ function day(){
 
         // Other events, not yet implemented.
         }else if(event < .99){
-            event_result = random_integer({
+            event_result = core_random_integer({
               'max': 2,
             });
             if(event_result === 0){
@@ -161,7 +167,7 @@ function day(){
         // Daily resource bonus event.
         }else{
             // Generate which resource will have daily bonus increased.
-            event_result = random_integer({
+            event_result = core_random_integer({
               'max': 4,
             });
 
@@ -307,7 +313,8 @@ function new_game(){
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
-          + '<td><a onclick="alter_workers({type:\'' + resource + '\',})">+</a>,<a onclick="alter_workers({amount:-1,type:\'' + resource + '\',})">—</a>';
+          + '<td><a onclick="alter_workers({type:\'' + resource + '\',})">+</a>'
+          + '<td><a onclick="alter_workers({amount:-1,type:\'' + resource + '\',})">—</a>';
 
         counter += 1;
         table += tr;
