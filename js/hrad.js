@@ -33,15 +33,15 @@ function alter_workers(args){
 }
 
 function day(){
-    storage_save();
+    core_storage_save();
 
     // If day is not over, continue.
     if(daylight_passed < 5){
         // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
-            if(isNaN(storage_data['day-duration'])
-              || storage_data['day-duration'] <= 0){
-                storage_data['day-duration'] = 600;
+            if(isNaN(core_storage_data['day-duration'])
+              || core_storage_data['day-duration'] <= 0){
+                core_storage_data['day-duration'] = 600;
             }
 
             document.getElementById('day-events').innerHTML = '';
@@ -204,12 +204,12 @@ function day(){
         // More daylight has passed.
         daylight_passed += 1;
 
-        // If day is not over, wait storage_data['day-duration'] ms for next event,
+        // If day is not over, wait core_storage_data['day-duration'] ms for next event,
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
             window.setTimeout(
               day,
-              storage_data['day-duration']
+              core_storage_data['day-duration']
             );
 
         // Otherwise end the current day.
@@ -369,14 +369,14 @@ window.onload = function(e){
         },
       },
     });
-    storage_init({
+    core_storage_init({
       'data': {
         'day-duration': 600,
       },
       'prefix': 'Hrad.htm-',
     });
 
-    storage_update();
+    core_storage_update();
     new_game();
 
     window.onbeforeunload = function(){
