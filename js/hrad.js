@@ -357,7 +357,7 @@ var resource_defaults = {
 var resources = {};
 
 window.onload = function(e){
-    input_init({
+    core_input_init({
       'keybinds': {
         13: {
           'todo': function(){
