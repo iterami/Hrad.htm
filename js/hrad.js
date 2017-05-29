@@ -328,36 +328,8 @@ function new_game(){
     document.getElementById('table').innerHTML += table;
 }
 
-var block_unload = 0;
-var daylight_passed = 0;
-var resource_defaults = {
-  'food': {
-    'amount': 10,
-    'bonus': -1,
-    'multiplier': 2,
-    'workers': 0,
-  },
-  'gold': {
-    'amount': 0,
-    'bonus': 0,
-    'workers': 0,
-  },
-  'people': {
-    'amount': 1,
-    'bonus': 0,
-    'unemployed': 1,
-    'workers': 0,
-  },
-  'stone': {
-    'amount': 0,
-    'bonus': 0,
-    'workers': 0,
-  },
-};
-var resources = {};
-
-window.onload = function(e){
-    core_input_init({
+function repo_init(){
+    core_input_binds_add({
       'keybinds': {
         13: {
           'todo': function(){
@@ -386,4 +358,32 @@ window.onload = function(e){
             return 'Save feature will be implemented in the future.';
         }
     };
+}
+
+var block_unload = 0;
+var daylight_passed = 0;
+var resource_defaults = {
+  'food': {
+    'amount': 10,
+    'bonus': -1,
+    'multiplier': 2,
+    'workers': 0,
+  },
+  'gold': {
+    'amount': 0,
+    'bonus': 0,
+    'workers': 0,
+  },
+  'people': {
+    'amount': 1,
+    'bonus': 0,
+    'unemployed': 1,
+    'workers': 0,
+  },
+  'stone': {
+    'amount': 0,
+    'bonus': 0,
+    'workers': 0,
+  },
 };
+var resources = {};
