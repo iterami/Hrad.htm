@@ -330,6 +330,15 @@ function new_game(){
 
 function repo_init(){
     core_input_binds_add({
+      'beforeunload': {
+        'todo': function(){
+            // Warn players if they have already made progress.
+            if(block_unload
+              && resources['people']['amount'] > 0){
+                return 'Save feature will be implemented in the future.';
+            }
+        },
+      },
       'keybinds': {
         13: {
           'todo': function(){
@@ -350,14 +359,6 @@ function repo_init(){
 
     core_storage_update();
     new_game();
-
-    window.onbeforeunload = function(){
-        // Warn players if they have already made progress.
-        if(block_unload
-          && resources['people']['amount'] > 0){
-            return 'Save feature will be implemented in the future.';
-        }
-    };
 }
 
 var block_unload = 0;
