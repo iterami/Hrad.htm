@@ -329,11 +329,11 @@ function new_game(){
 }
 
 function repo_init(){
-    core_storage_init({
-      'data': {
+    core_repo_init({
+      'storage': {
         'day-duration': 600,
       },
-      'prefix': 'Hrad.htm-',
+      'title': 'Hrad.htm',
     });
     core_events_bind({
       'beforeunload': {
