@@ -330,12 +330,6 @@ function new_game(){
 
 function repo_init(){
     core_repo_init({
-      'storage': {
-        'day-duration': 600,
-      },
-      'title': 'Hrad.htm',
-    });
-    core_events_bind({
       'beforeunload': {
         'todo': function(){
             // Warn players if they have already made progress.
@@ -355,6 +349,10 @@ function repo_init(){
           },
         },
       },
+      'storage': {
+        'day-duration': 600,
+      },
+      'title': 'Hrad.htm',
     });
 
     core_storage_update();
