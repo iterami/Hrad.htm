@@ -246,8 +246,8 @@ function day(){
 
         // Update start-day text with start new day or game over message.
         document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
-          ? '<a onclick=day()>Start New Day (ENTER)</a>'
-          : 'Your Castle Has Fallen. :(<br><a onclick=new_game()>Start Over</a>';
+          ? start_new_day
+          : 'Your Castle Has Fallen. :(<br><input onclick=new_game() type=button value="Start Over">';
     }
 
     // Update text displays.
@@ -313,19 +313,19 @@ function new_game(){
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
-          + '<td><a onclick="alter_workers({type:\'' + resource + '\',})">+</a>'
-          + '<td><a onclick="alter_workers({amount:-1,type:\'' + resource + '\',})">—</a>';
+          + '<td><input onclick="alter_workers({type:\'' + resource + '\',})" type=button value=+><input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
 
         counter += 1;
         table += tr;
     }
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
-    document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 
     document.getElementById('day-events').innerHTML = '';
-    document.getElementById('start-day').innerHTML = '<a onclick=day()>Start New Day (ENTER)</a>';
-    document.getElementById('table').innerHTML += table;
+    document.getElementById('start-day').innerHTML = start_new_day;
+    document.getElementById('table').innerHTML = '<tr class=header><td>Resource<td>Amount<td>Bonus/Day<td>Workers (<span id=unemployed-workers></span>)<td colspan=2>Edit' + table;
+
+    document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 }
 
 function repo_init(){
@@ -352,6 +352,7 @@ function repo_init(){
       'storage': {
         'day-duration': 600,
       },
+      'storage-menu': '<input id=day-duration>ms',
       'title': 'Hrad.htm',
     });
 
@@ -386,3 +387,4 @@ var resource_defaults = {
   },
 };
 var resources = {};
+var start_new_day = '<input onclick=day() type=button value="Start New Day [ENTER]">';
