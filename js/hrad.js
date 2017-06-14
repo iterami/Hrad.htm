@@ -323,7 +323,7 @@ function new_game(){
 
     document.getElementById('day-events').innerHTML = '';
     document.getElementById('start-day').innerHTML = start_new_day;
-    document.getElementById('table').innerHTML = '<tr class=header><td>Resource<td>Amount<td>Bonus/Day<td>Workers (<span id=unemployed-workers></span>)<td colspan=2>Edit' + table;
+    document.getElementById('table').innerHTML = '<tr class=header><td>Resource<td>Amount<td>Bonus/Day<td>Workers (<span id=unemployed-workers></span>)<td>Edit' + table;
 
     document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 }
