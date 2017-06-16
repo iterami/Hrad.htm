@@ -352,7 +352,7 @@ function repo_init(){
       'storage': {
         'day-duration': 600,
       },
-      'storage-menu': '<input id=day-duration>ms',
+      'storage-menu': '<table><tr><td><input id=day-duration><td>ms</table>',
       'title': 'Hrad.htm',
     });
 
