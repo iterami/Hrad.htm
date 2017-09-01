@@ -300,7 +300,6 @@ function new_game(){
     block_unload = 0;
     daylight_passed = 0;
 
-    var counter = 0;
     var table = '';
     for(var resource in resource_defaults){
         resources[resource] = resources[resource] || {};
@@ -309,14 +308,11 @@ function new_game(){
         resources[resource]['bonus'] = resource_defaults[resource]['bonus'];
         resources[resource]['workers'] = resource_defaults[resource]['workers'];
 
-        var tr = '<tr><td>' + resource
+        table += '<tr><td>' + resource
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
           + '<td><input onclick="alter_workers({type:\'' + resource + '\',})" type=button value=+><input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
-
-        counter += 1;
-        table += tr;
     }
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
