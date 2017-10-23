@@ -219,7 +219,7 @@ function day(){
 
     }else{
         // End day.
-        block_unload = 1;
+        block_unload = true;
         daylight_passed = 0;
 
         // Update resources with daily bonuses.
@@ -297,7 +297,7 @@ function delete_people(count){
 }
 
 function new_game(){
-    block_unload = 0;
+    block_unload = false;
     daylight_passed = 0;
 
     var table = '';
@@ -323,32 +323,3 @@ function new_game(){
 
     document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 }
-
-var block_unload = 0;
-var daylight_passed = 0;
-var resource_defaults = {
-  'food': {
-    'amount': 10,
-    'bonus': -1,
-    'multiplier': 2,
-    'workers': 0,
-  },
-  'gold': {
-    'amount': 0,
-    'bonus': 0,
-    'workers': 0,
-  },
-  'people': {
-    'amount': 1,
-    'bonus': 0,
-    'unemployed': 1,
-    'workers': 0,
-  },
-  'stone': {
-    'amount': 0,
-    'bonus': 0,
-    'workers': 0,
-  },
-};
-var resources = {};
-var start_new_day = '<input onclick=day() type=button value="Start New Day [ENTER]">';
