@@ -207,10 +207,13 @@ function day(){
         // If day is not over, wait core_storage_data['day-duration'] ms for next event,
         //   which is set by the day-duration input field.
         if(daylight_passed < 5){
-            window.setTimeout(
-              day,
-              core_storage_data['day-duration']
-            );
+            core_interval_modify({
+              'clear': 'clearTimeout',
+              'id': 'day',
+              'interval': core_storage_data['day-duration'],
+              'set': 'setTimeout',
+              'todo': day,
+            });
 
         // Otherwise end the current day.
         }else{
