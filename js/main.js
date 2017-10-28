@@ -37,7 +37,7 @@ function repo_init(){
             'bonus': 0,
             'workers': 0,
           },
-                },
+        },
         'resources': {},
         'start_new_day': '<input onclick=day() type=button value="Start New Day [ENTER]">',
       },
