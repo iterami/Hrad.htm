@@ -303,7 +303,7 @@ function new_game(){
     block_unload = false;
     daylight_passed = 0;
 
-    var table = '';
+    var tbody = '';
     for(var resource in resource_defaults){
         resources[resource] = resources[resource] || {};
 
@@ -311,7 +311,7 @@ function new_game(){
         resources[resource]['bonus'] = resource_defaults[resource]['bonus'];
         resources[resource]['workers'] = resource_defaults[resource]['workers'];
 
-        table += '<tr><td>' + resource
+        tbody += '<tr><td>' + resource
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
           + '<td id=' + resource + '-workers>' + resources[resource]['workers']
@@ -322,7 +322,7 @@ function new_game(){
 
     document.getElementById('day-events').innerHTML = '';
     document.getElementById('start-day').innerHTML = start_new_day;
-    document.getElementById('table').innerHTML = '<tr class=header><td>Resource<td>Amount<td>Bonus/Day<td>Workers (<span id=unemployed-workers></span>)<td>Edit' + table;
+    document.getElementById('tbody').innerHTML = tbody;
 
     document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
 }
