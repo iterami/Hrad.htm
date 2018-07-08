@@ -48,11 +48,11 @@ function day(){
             document.getElementById('start-day').innerHTML = 'Day Progressing...';
         }
 
-        var output = '';
+        let output = '';
 
         // Generate random event value.
-        var event = Math.random();
-        var event_result = 0;
+        let event = Math.random();
+        let event_result = 0;
 
         // No event.
         if(event < .72){
@@ -226,7 +226,7 @@ function day(){
         daylight_passed = 0;
 
         // Update resources with daily bonuses.
-        for(var resource in resources){
+        for(let resource in resources){
             resources[resource]['amount'] += resources[resource]['bonus'];
         }
         resources['people']['unemployed'] += resources['people']['bonus'];
@@ -254,7 +254,7 @@ function day(){
     }
 
     // Update text displays.
-    for(var resource in resources){
+    for(let resource in resources){
         document.getElementById(resource).innerHTML = resources[resource]['amount'];
     }
     document.getElementById('food-bonus').innerHTML = (resources['food']['bonus'] >= 0 ? '+' : '') + resources['food']['bonus'];
@@ -303,8 +303,8 @@ function new_game(){
     block_unload = false;
     daylight_passed = 0;
 
-    var tbody = '';
-    for(var resource in resource_defaults){
+    let tbody = '';
+    for(let resource in resource_defaults){
         resources[resource] = resources[resource] || {};
 
         resources[resource]['amount'] = resource_defaults[resource]['amount'];
