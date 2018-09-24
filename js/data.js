@@ -1,7 +1,6 @@
 'use strict';
 
 // Required args: type
-// Optional args: amount
 function alter_workers(args){
     args = core_args({
       'args': args,
