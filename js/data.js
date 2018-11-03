@@ -313,8 +313,9 @@ function new_game(){
         tbody += '<tr><td>' + resource
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
-          + '<td id=' + resource + '-workers>' + resources[resource]['workers']
-          + '<td><input onclick="alter_workers({type:\'' + resource + '\',})" type=button value=+><input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
+          + '<td><input onclick="alter_workers({type:\'' + resource + '\',})" type=button value=+>'
+            + ' <span id=' + resource + '-workers>' + resources[resource]['workers'] + '</span> '
+            + '<input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
     }
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
