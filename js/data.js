@@ -146,9 +146,6 @@ function day(){
                 output = 'Recruitment! +';
             }
 
-            // Update food bonus based on current population.
-            resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
-
             output += '1 Population';
 
         // Other events, not yet implemented.
@@ -174,25 +171,21 @@ function day(){
             if(event_result === 0){
                 output = 'Seeds! +1 Food/day';
                 resources['food']['bonus'] += 1;
-                document.getElementById('food-bonus').innerHTML = resources['food']['bonus'];
 
             // Gold daily bonus increase.
             }else if(event_result === 1){
                 output = 'Veins! +1 Gold/day';
                 resources['gold']['bonus'] += 1;
-                document.getElementById('gold-bonus').innerHTML = resources['gold']['bonus'];
 
             // Population daily bonus increase.
             }else if(event_result === 2){
                 output = 'Popularity! +1 Population/day';
                 resources['people']['bonus'] += 1;
-                document.getElementById('people-bonus').innerHTML = resources['people']['bonus'];
 
             // Stone daily bonus increase.
             }else{
                 output = 'Rocks! +1 Stone/day';
                 resources['stone']['bonus'] += 1;
-                document.getElementById('stone-bonus').innerHTML = resources['stone']['bonus'];
 
             }
         }
@@ -213,13 +206,10 @@ function day(){
               'set': 'setTimeout',
               'todo': day,
             });
-
-        // Otherwise end the current day.
-        }else{
-            day();
         }
+    }
 
-    }else{
+    if(daylight_passed >= 5){
         // End day.
         block_unload = true;
         daylight_passed = 0;
@@ -252,11 +242,14 @@ function day(){
           : 'Your Castle Has Fallen. :(<br><input onclick=new_game() type=button value="Start Over">';
     }
 
+    // Update food bonus based on current population.
+    resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
+
     // Update text displays.
     for(let resource in resources){
         document.getElementById(resource).innerHTML = resources[resource]['amount'];
+        document.getElementById(resource + '-bonus').innerHTML = (resources[resource]['bonus'] >= 0 ? '+' : '') + resources[resource]['bonus'];
     }
-    document.getElementById('food-bonus').innerHTML = (resources['food']['bonus'] >= 0 ? '+' : '') + resources['food']['bonus'];
     document.getElementById('unemployed-workers').innerHTML = resources['people']['unemployed'];
 }
 
