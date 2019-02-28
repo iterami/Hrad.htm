@@ -24,17 +24,20 @@ function repo_init(){
           'gold': {
             'amount': 0,
             'bonus': 0,
+            'multiplier': 1,
             'workers': 0,
           },
           'people': {
             'amount': 1,
             'bonus': 0,
+            'multiplier': 1,
             'unemployed': 1,
             'workers': 0,
           },
           'stone': {
             'amount': 0,
             'bonus': 0,
+            'multiplier': 1,
             'workers': 0,
           },
         },

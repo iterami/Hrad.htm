@@ -10,14 +10,14 @@ function alter_workers(args){
     });
 
     if(daylight_passed > 0
-      || (resources['people']['unemployed'] <= 0 && args['amount'] > 0)){
+      || args['amount'] > resources['people']['unemployed']){
         return;
     }
 
     if(resources[args['type']]['workers'] > 0
       || args['amount'] > 0){
         resources['people']['unemployed'] -= args['amount'];
-        resources[args['type']]['bonus'] += args['amount'] * (resource_defaults[args['type']]['multiplier'] || 1);
+        resources[args['type']]['bonus'] += args['amount'] * resource_defaults[args['type']]['multiplier'];
         resources[args['type']]['workers'] += args['amount'];
 
     }else{
