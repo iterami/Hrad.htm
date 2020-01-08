@@ -24,11 +24,11 @@ function alter_workers(args){
         resources[args['type']]['workers'] = 0;
     }
 
-    document.getElementById(args['type'] + '-bonus').innerHTML =
+    document.getElementById(args['type'] + '-bonus').textContent =
       (resources[args['type']]['bonus'] >= 0 ? '+' : '') + resources[args['type']]['bonus'];
-    document.getElementById(args['type'] + '-workers').innerHTML = resources[args['type']]['workers'];
+    document.getElementById(args['type'] + '-workers').textContent = resources[args['type']]['workers'];
 
-    document.getElementById('unemployed-workers').innerHTML = resources['people']['unemployed'];
+    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
 
 function day(){
@@ -43,8 +43,8 @@ function day(){
                 core_storage_data['day-duration'] = 600;
             }
 
-            document.getElementById('day-events').innerHTML = '';
-            document.getElementById('start-day').innerHTML = 'Day Progressing...';
+            document.getElementById('day-events').textContent = '';
+            document.getElementById('start-day').textContent = 'Day Progressing...';
         }
 
         let output = '';
@@ -247,10 +247,10 @@ function day(){
 
     // Update text displays.
     for(let resource in resources){
-        document.getElementById(resource).innerHTML = resources[resource]['amount'];
-        document.getElementById(resource + '-bonus').innerHTML = (resources[resource]['bonus'] >= 0 ? '+' : '') + resources[resource]['bonus'];
+        document.getElementById(resource).textContent = resources[resource]['amount'];
+        document.getElementById(resource + '-bonus').textContent = (resources[resource]['bonus'] >= 0 ? '+' : '') + resources[resource]['bonus'];
     }
-    document.getElementById('unemployed-workers').innerHTML = resources['people']['unemployed'];
+    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
 
 function delete_people(count){
@@ -264,29 +264,29 @@ function delete_people(count){
             resources['people']['bonus'] -= 1;
             resources['people']['workers'] -= 1;
 
-            document.getElementById('people-bonus').innerHTML = resources['people']['workers'];
-            document.getElementById('people-workers').innerHTML = resources['people']['workers'];
+            document.getElementById('people-bonus').textContent = resources['people']['workers'];
+            document.getElementById('people-workers').textContent = resources['people']['workers'];
 
         // If no people workers, decrease stone workers.
         }else if(resources['stone']['workers'] > 0){
             resources['stone']['bonus'] -= 1;
             resources['stone']['workers'] -= 1;
 
-            document.getElementById('stone-bonus').innerHTML = resources['stone']['workers'];
-            document.getElementById('stone-workers').innerHTML = resources['stone']['workers'];
+            document.getElementById('stone-bonus').textContent = resources['stone']['workers'];
+            document.getElementById('stone-workers').textContent = resources['stone']['workers'];
 
         // If no stone workers, decrease gold workers.
         }else if(resources['gold']['workers'] > 0){
             resources['gold']['bonus'] -= 1;
             resources['gold']['workers'] -= 1;
 
-            document.getElementById('gold-bonus').innerHTML = resources['gold']['workers'];
-            document.getElementById('gold-workers').innerHTML = resources['gold']['workers'];
+            document.getElementById('gold-bonus').textContent = resources['gold']['workers'];
+            document.getElementById('gold-workers').textContent = resources['gold']['workers'];
 
         // If no gold workers, decrease food workers.
         }else{
             resources['food']['workers'] -= 1;
-            document.getElementById('food-workers').innerHTML = resources['food']['workers'];
+            document.getElementById('food-workers').textContent = resources['food']['workers'];
         }
     }while(count--);
 }
@@ -313,9 +313,9 @@ function new_game(){
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
 
-    document.getElementById('day-events').innerHTML = '';
+    document.getElementById('day-events').textContent = '';
     document.getElementById('start-day').innerHTML = start_new_day;
     document.getElementById('tbody').innerHTML = tbody;
 
-    document.getElementById('unemployed-workers').innerHTML = resource_defaults['people']['unemployed'];
+    document.getElementById('unemployed-workers').textContent = resource_defaults['people']['unemployed'];
 }
