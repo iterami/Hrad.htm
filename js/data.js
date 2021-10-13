@@ -38,7 +38,7 @@ function day(){
     if(daylight_passed < 5){
         // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
-            if(Number.isNaN(core_storage_data['day-duration'])
+            if(globalThis.isNaN(core_storage_data['day-duration'])
               || core_storage_data['day-duration'] <= 0){
                 core_storage_data['day-duration'] = 600;
             }
