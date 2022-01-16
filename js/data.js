@@ -25,7 +25,7 @@ function alter_workers(args){
     }
 
     document.getElementById(args['type'] + '-bonus').textContent =
-      (resources[args['type']]['bonus'] >= 0 ? '+' : '') + resources[args['type']]['bonus'];
+      (resources[args['type']]['bonus'] > 0 ? '+' : '') + resources[args['type']]['bonus'];
     document.getElementById(args['type'] + '-workers').textContent = resources[args['type']]['workers'];
 
     document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
@@ -179,7 +179,6 @@ function day(){
     }
 
     if(daylight_passed >= core_storage_data['day-events']){
-        block_unload = true;
         daylight_passed = 0;
 
         for(const resource in resources){
@@ -249,7 +248,6 @@ function delete_people(count){
 }
 
 function new_game(){
-    block_unload = false;
     daylight_passed = 0;
 
     let tbody = '';

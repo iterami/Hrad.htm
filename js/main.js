@@ -4,14 +4,10 @@ function repo_init(){
     core_repo_init({
       'beforeunload': {
         'todo': function(){
-            if(block_unload
-              && resources['people']['amount'] > 0){
-                return 'Save feature will be implemented in the future.';
-            }
+            return 'Game does not yet save.';
         },
       },
       'globals': {
-        'block_unload': false,
         'daylight_passed': 0,
         'resource_defaults': {
           'food': {
