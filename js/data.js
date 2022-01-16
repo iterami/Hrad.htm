@@ -16,8 +16,10 @@ function alter_workers(args){
 
     if(resources[args['type']]['workers'] > 0
       || args['amount'] > 0){
+        const multiplier = resource_defaults[args['type']]['multiplier'] || 1;
+
         resources['people']['unemployed'] -= args['amount'];
-        resources[args['type']]['bonus'] += args['amount'] * resource_defaults[args['type']]['multiplier'];
+        resources[args['type']]['bonus'] += args['amount'] * multiplier;
         resources[args['type']]['workers'] += args['amount'];
 
     }else{
@@ -209,7 +211,7 @@ function day(){
 
     for(const resource in resources){
         document.getElementById(resource).textContent = resources[resource]['amount'];
-        document.getElementById(resource + '-bonus').textContent = (resources[resource]['bonus'] >= 0 ? '+' : '') + resources[resource]['bonus'];
+        document.getElementById(resource + '-bonus').textContent = (resources[resource]['bonus'] > 0 ? '+' : '') + resources[resource]['bonus'];
     }
     document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
@@ -254,9 +256,9 @@ function new_game(){
     for(const resource in resource_defaults){
         resources[resource] = resources[resource] || {};
 
-        resources[resource]['amount'] = resource_defaults[resource]['amount'];
-        resources[resource]['bonus'] = resource_defaults[resource]['bonus'];
-        resources[resource]['workers'] = resource_defaults[resource]['workers'];
+        resources[resource]['amount'] = resource_defaults[resource]['amount'] || 0;
+        resources[resource]['bonus'] = resource_defaults[resource]['bonus'] || 0;
+        resources[resource]['workers'] = resource_defaults[resource]['workers'] || 0;
 
         tbody += '<tr><td>' + resource
           + '<td id=' + resource + '>' + resources[resource]['amount']
@@ -266,11 +268,11 @@ function new_game(){
             + '<input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
     }
 
-    resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
+    resources['people']['unemployed'] = resources['people']['amount'];
 
     document.getElementById('day').textContent = '';
     document.getElementById('start-day').innerHTML = start_new_day;
     document.getElementById('tbody').innerHTML = tbody;
 
-    document.getElementById('unemployed-workers').textContent = resource_defaults['people']['unemployed'];
+    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
