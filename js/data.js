@@ -42,10 +42,9 @@ function day(){
             document.getElementById('start-day').textContent = '';
         }
 
-        let output = '';
-
         const event = Math.random();
         let event_result = 0;
+        let output = '';
 
         // No event.
         if(event < .72){
@@ -58,6 +57,7 @@ function day(){
             }) + 1;
 
             if(core_random_boolean()){
+                output = 'Bugs! -';
                 resources['food']['amount'] -= event_result;
 
                 if(resources['food']['amount'] < 0){
@@ -65,12 +65,11 @@ function day(){
                     resources['food']['amount'] = 0;
                 }
 
-                output = 'Bugs! -';
-
             }else{
-                resources['food']['amount'] += event_result;
                 output = 'Rain! +';
+                resources['food']['amount'] += event_result;
             }
+
             output += event_result + ' Food';
 
         // Gold event.
@@ -80,12 +79,12 @@ function day(){
             }) + 1;
 
             if(core_random_boolean()){
-                resources['gold']['amount'] -= event_result;
                 output = 'Thieves! -';
+                resources['gold']['amount'] -= event_result;
 
             }else{
-                resources['gold']['amount'] += event_result;
                 output = 'Mining! +';
+                resources['gold']['amount'] += event_result;
             }
 
             output += event_result + ' Gold';
@@ -97,6 +96,7 @@ function day(){
             }) + 1;
 
             if(core_random_boolean()){
+                output = 'Repair! -';
                 resources['stone']['amount'] -= event_result;
 
                 if(resources['stone']['amount'] < 0){
@@ -104,27 +104,26 @@ function day(){
                     resources['gold']['stone'] = 0;
                 }
 
-                output = 'Repair! -';
-
             }else{
                 resources['stone']['amount'] += event_result;
                 output = 'Mining! +';
             }
+
             output += event_result + ' Stone';
 
         // Population event.
         }else if(event < .96){
             if(core_random_boolean()){
+                output = 'Sickness! -';
                 if(resources['people']['amount'] > 0){
                     resources['people']['amount'] -= 1;
                     delete_people(0);
                 }
-                output = 'Sickness! -';
 
             }else{
+                output = 'Recruitment! +';
                 resources['people']['amount'] += 1;
                 resources['people']['unemployed'] += 1;
-                output = 'Recruitment! +';
             }
 
             output += '1 Population';
@@ -134,11 +133,12 @@ function day(){
             event_result = core_random_integer({
               'max': 2,
             });
+
             if(event_result === 0){
-                output = 'Battle Event (NYI)';
+                output = 'Battle Event (TODO)';
 
             }else{
-                output = 'Other Event (NYI)';
+                output = 'Other Event (TODO)';
             }
 
         // Daily resource bonus event.
@@ -162,7 +162,6 @@ function day(){
             }else{
                 output = 'Rocks! +1 Stone/day';
                 resources['stone']['bonus'] += 1;
-
             }
         }
 
@@ -191,8 +190,7 @@ function day(){
         if(resources['food']['amount'] + resources['food']['bonus'] < 0){
             delete_people(resources['people']['amount'] - 1);
             resources['people']['amount'] -=
-              resources['people']['amount']
-              - (resources['food']['amount'] + resources['food']['bonus']);
+              resources['people']['amount'] - (resources['food']['amount'] + resources['food']['bonus']);
 
             if(resources['people']['amount'] < 0){
                 resources['people']['amount'] = 0;
@@ -268,11 +266,10 @@ function new_game(){
             + '<input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
     }
 
-    resources['people']['unemployed'] = resources['people']['amount'];
-
     document.getElementById('day').textContent = '';
     document.getElementById('start-day').innerHTML = start_new_day;
     document.getElementById('tbody').innerHTML = tbody;
 
+    resources['people']['unemployed'] = resources['people']['amount'];
     document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
