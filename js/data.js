@@ -35,15 +35,10 @@ function day(){
     core_storage_save();
 
     // If day is not over, continue.
-    if(daylight_passed < 5){
+    if(daylight_passed < core_storage_data['day-events']){
         // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
-            if(globalThis.isNaN(core_storage_data['day-duration'])
-              || core_storage_data['day-duration'] <= 0){
-                core_storage_data['day-duration'] = 600;
-            }
-
-            document.getElementById('day-events').textContent = '';
+            document.getElementById('day').textContent = '';
             document.getElementById('start-day').textContent = 'Day Progressing...';
         }
 
@@ -191,25 +186,23 @@ function day(){
         }
 
         // Add event to list of day-events.
-        document.getElementById('day-events').innerHTML += output + '<br>';
+        document.getElementById('day').innerHTML += output + '<br>';
 
         // More daylight has passed.
         daylight_passed += 1;
 
-        // If day is not over, wait core_storage_data['day-duration'] ms for next event,
-        //   which is set by the day-duration input field.
-        if(daylight_passed < 5){
+        if(daylight_passed < core_storage_data['day-events']){
             core_interval_modify({
               'clear': 'clearTimeout',
               'id': 'day',
-              'interval': core_storage_data['day-duration'],
+              'interval': core_storage_data['day-event-duration'],
               'set': 'setTimeout',
               'todo': day,
             });
         }
     }
 
-    if(daylight_passed >= 5){
+    if(daylight_passed >= core_storage_data['day-events']){
         // End day.
         block_unload = true;
         daylight_passed = 0;
@@ -239,7 +232,7 @@ function day(){
         // Update start-day text with start new day or game over message.
         document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
           ? start_new_day
-          : 'Your Castle Has Fallen. :(<br><input onclick=new_game() type=button value="Start Over">';
+          : 'Your castle has fallen.<br><input onclick=new_game() type=button value="Start Over">';
     }
 
     // Update food bonus based on current population.
@@ -313,7 +306,7 @@ function new_game(){
 
     resources['people']['unemployed'] = resource_defaults['people']['unemployed'];
 
-    document.getElementById('day-events').textContent = '';
+    document.getElementById('day').textContent = '';
     document.getElementById('start-day').innerHTML = start_new_day;
     document.getElementById('tbody').innerHTML = tbody;
 

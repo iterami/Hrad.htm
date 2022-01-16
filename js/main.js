@@ -55,9 +55,11 @@ function repo_init(){
         },
       },
       'storage': {
-        'day-duration': 600,
+        'day-event-duration': 500,
+        'day-events': 10,
       },
-      'storage-menu': '<table><tr><td><input id=day-duration><td>ms</table>',
+      'storage-menu': '<table><tr><td><input id=day-event-duration><td>Event Duration'
+        + '<tr><td><input id=day-events><td>Events/Day</table>',
       'title': 'Hrad.htm',
     });
 
