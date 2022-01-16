@@ -34,17 +34,14 @@ function alter_workers(args){
 function day(){
     core_storage_save();
 
-    // If day is not over, continue.
     if(daylight_passed < core_storage_data['day-events']){
-        // If day just started, clear previous days events and change start-day link to text.
         if(daylight_passed === 0){
             document.getElementById('day').textContent = '';
-            document.getElementById('start-day').textContent = 'Day Progressing...';
+            document.getElementById('start-day').textContent = '';
         }
 
         let output = '';
 
-        // Generate random event value.
         const event = Math.random();
         let event_result = 0;
 
@@ -54,17 +51,14 @@ function day(){
 
         // Food event.
         }else if(event < .78){
-            // Generate food value for this event.
             event_result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
-                // Food lost.
                 resources['food']['amount'] -= event_result;
 
                 if(resources['food']['amount'] < 0){
-                    // Lose 2 gold per food under 0.
                     resources['gold']['amount'] += resources['food']['amount'] * 2;
                     resources['food']['amount'] = 0;
                 }
@@ -72,7 +66,6 @@ function day(){
                 output = 'Bugs! -';
 
             }else{
-                // Food gained.
                 resources['food']['amount'] += event_result;
                 output = 'Rain! +';
             }
@@ -80,18 +73,15 @@ function day(){
 
         // Gold event.
         }else if(event < .84){
-            // Generate gold value for this event.
             event_result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
-                // Lose gold, negative gold OK.
                 resources['gold']['amount'] -= event_result;
-                output = 'Theives! -';
+                output = 'Thieves! -';
 
             }else{
-                // Gain gold.
                 resources['gold']['amount'] += event_result;
                 output = 'Mining! +';
             }
@@ -100,17 +90,14 @@ function day(){
 
         // Stone event.
         }else if(event < .9){
-            // Generate stone value for this event.
             event_result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
-                // Lose stone.
                 resources['stone']['amount'] -= event_result;
 
                 if(resources['stone']['amount'] < 0){
-                    // Lose 2 gold per stone under 0.
                     resources['gold']['amount'] += resources['stone']['amount'] * 2;
                     resources['gold']['stone'] = 0;
                 }
@@ -118,7 +105,6 @@ function day(){
                 output = 'Repair! -';
 
             }else{
-                // Gain stone.
                 resources['stone']['amount'] += event_result;
                 output = 'Mining! +';
             }
@@ -127,7 +113,6 @@ function day(){
         // Population event.
         }else if(event < .96){
             if(core_random_boolean()){
-                // Lose person.
                 if(resources['people']['amount'] > 0){
                     resources['people']['amount'] -= 1;
                     delete_people(0);
@@ -135,7 +120,6 @@ function day(){
                 output = 'Sickness! -';
 
             }else{
-                // Gain person.
                 resources['people']['amount'] += 1;
                 resources['people']['unemployed'] += 1;
                 output = 'Recruitment! +';
@@ -143,7 +127,7 @@ function day(){
 
             output += '1 Population';
 
-        // Other events, not yet implemented.
+        // Other events.
         }else if(event < .99){
             event_result = core_random_integer({
               'max': 2,
@@ -157,27 +141,22 @@ function day(){
 
         // Daily resource bonus event.
         }else{
-            // Generate which resource will have daily bonus increased.
             event_result = core_random_integer({
               'max': 4,
             });
 
-            // Food daily bonus increase.
             if(event_result === 0){
                 output = 'Seeds! +1 Food/day';
                 resources['food']['bonus'] += 1;
 
-            // Gold daily bonus increase.
             }else if(event_result === 1){
                 output = 'Veins! +1 Gold/day';
                 resources['gold']['bonus'] += 1;
 
-            // Population daily bonus increase.
             }else if(event_result === 2){
                 output = 'Popularity! +1 Population/day';
                 resources['people']['bonus'] += 1;
 
-            // Stone daily bonus increase.
             }else{
                 output = 'Rocks! +1 Stone/day';
                 resources['stone']['bonus'] += 1;
@@ -185,10 +164,7 @@ function day(){
             }
         }
 
-        // Add event to list of day-events.
         document.getElementById('day').innerHTML += output + '<br>';
-
-        // More daylight has passed.
         daylight_passed += 1;
 
         if(daylight_passed < core_storage_data['day-events']){
@@ -203,19 +179,15 @@ function day(){
     }
 
     if(daylight_passed >= core_storage_data['day-events']){
-        // End day.
         block_unload = true;
         daylight_passed = 0;
 
-        // Update resources with daily bonuses.
         for(const resource in resources){
             resources[resource]['amount'] += resources[resource]['bonus'];
         }
         resources['people']['unemployed'] += resources['people']['bonus'];
 
-        // Calculate if there is not enough food to feed the current population.
         if(resources['food']['amount'] + resources['food']['bonus'] < 0){
-            // If not enough food, decrease population and workers.
             delete_people(resources['people']['amount'] - 1);
             resources['people']['amount'] -=
               resources['people']['amount']
@@ -229,16 +201,13 @@ function day(){
             resources['food']['bonus'] = 0;
         }
 
-        // Update start-day text with start new day or game over message.
         document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
           ? start_new_day
           : 'Your castle has fallen.<br><input onclick=new_game() type=button value="Start Over">';
     }
 
-    // Update food bonus based on current population.
     resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
 
-    // Update text displays.
     for(const resource in resources){
         document.getElementById(resource).textContent = resources[resource]['amount'];
         document.getElementById(resource + '-bonus').textContent = (resources[resource]['bonus'] >= 0 ? '+' : '') + resources[resource]['bonus'];
@@ -248,11 +217,9 @@ function day(){
 
 function delete_people(count){
     do{
-        // Decrease unemployed workers first.
         if(resources['people']['unemployed'] > 0){
             resources['people']['unemployed'] -= 1;
 
-        // If no unemployed workers, decrease people workers.
         }else if(resources['people']['workers'] > 0){
             resources['people']['bonus'] -= 1;
             resources['people']['workers'] -= 1;
@@ -260,7 +227,6 @@ function delete_people(count){
             document.getElementById('people-bonus').textContent = resources['people']['workers'];
             document.getElementById('people-workers').textContent = resources['people']['workers'];
 
-        // If no people workers, decrease stone workers.
         }else if(resources['stone']['workers'] > 0){
             resources['stone']['bonus'] -= 1;
             resources['stone']['workers'] -= 1;
@@ -268,7 +234,6 @@ function delete_people(count){
             document.getElementById('stone-bonus').textContent = resources['stone']['workers'];
             document.getElementById('stone-workers').textContent = resources['stone']['workers'];
 
-        // If no stone workers, decrease gold workers.
         }else if(resources['gold']['workers'] > 0){
             resources['gold']['bonus'] -= 1;
             resources['gold']['workers'] -= 1;
@@ -276,7 +241,6 @@ function delete_people(count){
             document.getElementById('gold-bonus').textContent = resources['gold']['workers'];
             document.getElementById('gold-workers').textContent = resources['gold']['workers'];
 
-        // If no gold workers, decrease food workers.
         }else{
             resources['food']['workers'] -= 1;
             document.getElementById('food-workers').textContent = resources['food']['workers'];

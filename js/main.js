@@ -4,7 +4,6 @@ function repo_init(){
     core_repo_init({
       'beforeunload': {
         'todo': function(){
-            // Warn players if they have already made progress.
             if(block_unload
               && resources['people']['amount'] > 0){
                 return 'Save feature will be implemented in the future.';
