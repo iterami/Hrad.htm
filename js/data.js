@@ -101,7 +101,7 @@ function day(){
 
                 if(resources['stone']['amount'] < 0){
                     resources['gold']['amount'] += resources['stone']['amount'] * 2;
-                    resources['gold']['stone'] = 0;
+                    resources['stone']['amount'] = 0;
                 }
 
             }else{
