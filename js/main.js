@@ -38,8 +38,8 @@ function repo_init(){
         'day-event-duration': 500,
         'day-events': 10,
       },
-      'storage-menu': '<table><tr><td><input id=day-event-duration min=1 step=any type=number><td>Event Duration'
-        + '<tr><td><input id=day-events min=1 step=any type=number><td>Events/Day</table>',
+      'storage-menu': '<table><tr><td><input class=mini id=day-event-duration min=1 step=any type=number><td>Event Duration'
+        + '<tr><td><input class=mini id=day-events min=1 step=any type=number><td>Events/Day</table>',
       'title': 'Hrad.htm',
     });
 
