@@ -22,14 +22,14 @@ function repo_init(){
           'stone': {},
         },
         'resources': {},
-        'start_new_day': '<input onclick=day() type=button value="Start New Day [ENTER]">',
+        'start_new_day': '<input onclick=new_day() type=button value="Start New Day [ENTER]">',
       },
       'keybinds': {
         13: {
           'todo': function(){
               if(daylight_passed === 0
                 && resources['people']['amount'] > 0){
-                  day();
+                  new_day();
               }
           },
         },

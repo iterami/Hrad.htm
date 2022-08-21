@@ -33,9 +33,7 @@ function alter_workers(args){
     document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
 }
 
-function day(){
-    core_storage_save();
-
+function day_event(){
     if(daylight_passed < core_storage_data['day-events']){
         if(daylight_passed === 0){
             document.getElementById('day').textContent = '';
@@ -174,7 +172,7 @@ function day(){
               'id': 'day',
               'interval': core_storage_data['day-event-duration'],
               'set': 'setTimeout',
-              'todo': day,
+              'todo': day_event,
             });
         }
     }
@@ -245,6 +243,17 @@ function delete_people(count){
             document.getElementById('food-workers').textContent = resources['food']['workers'];
         }
     }while(count--);
+}
+
+function new_day(){
+    core_storage_save({
+      'keys': [
+        'day-event-duration',
+        'day-events',
+      ],
+    });
+
+    day_event();
 }
 
 function new_game(){
