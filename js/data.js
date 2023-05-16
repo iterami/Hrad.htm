@@ -168,7 +168,6 @@ function day_event(){
 
         if(daylight_passed < core_storage_data['day-events']){
             core_interval_modify({
-              'clear': 'clearTimeout',
               'id': 'day',
               'interval': core_storage_data['day-event-duration'],
               'set': 'setTimeout',
