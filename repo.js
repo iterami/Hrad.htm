@@ -245,12 +245,10 @@ function delete_people(count){
 }
 
 function new_day(){
-    core_storage_save({
-      'keys': [
-        'day-event-duration',
-        'day-events',
-      ],
-    });
+    core_storage_save([
+      'day-event-duration',
+      'day-events',
+    ]);
 
     day_event();
 }
