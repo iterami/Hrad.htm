@@ -199,7 +199,7 @@ function day_event(){
 
         document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
           ? start_new_day
-          : 'Your castle has fallen.<br><input onclick=new_game() type=button value="Start Over">';
+          : 'Your castle has fallen.<br><button onclick=new_game() type=button>Start Over</button>';
     }
 
     resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
@@ -267,9 +267,9 @@ function new_game(){
         tbody += '<tr><td>' + resource
           + '<td id=' + resource + '>' + resources[resource]['amount']
           + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
-          + '<td><input onclick="alter_workers({type:\'' + resource + '\',})" type=button value=+>'
+          + '<td><button onclick="alter_workers({type:\'' + resource + '\',})" type=button>+</button>'
             + ' <span id=' + resource + '-workers>' + resources[resource]['workers'] + '</span> '
-            + '<input onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button value=—>';
+            + '<button onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button>—</button>';
     }
 
     document.getElementById('day').textContent = '';
@@ -302,7 +302,7 @@ function repo_init(){
           'stone': {},
         },
         'resources': {},
-        'start_new_day': '<input onclick=new_day() type=button value="Start New Day [ENTER]">',
+        'start_new_day': '<button onclick=new_day() type=button>Start New Day [ENTER]</button>',
       },
       'keybinds': {
         'Enter': {
