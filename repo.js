@@ -26,18 +26,18 @@ function alter_workers(args){
         resources[args['type']]['workers'] = 0;
     }
 
-    document.getElementById(args['type'] + '-bonus').textContent =
+    core_elements[args['type'] + '-bonus'].textContent =
       (resources[args['type']]['bonus'] > 0 ? '+' : '') + resources[args['type']]['bonus'];
-    document.getElementById(args['type'] + '-workers').textContent = resources[args['type']]['workers'];
+    core_elements[args['type'] + '-workers'].textContent = resources[args['type']]['workers'];
 
-    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
+    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
 }
 
 function day_event(){
     if(daylight_passed < core_storage_data['day-events']){
         if(daylight_passed === 0){
-            document.getElementById('day').textContent = '';
-            document.getElementById('start-day').textContent = '';
+            core_elements['day'].textContent = '';
+            core_elements['start-day'].textContent = '';
         }
 
         const event = Math.random();
@@ -163,7 +163,7 @@ function day_event(){
             }
         }
 
-        document.getElementById('day').innerHTML += output + '<br>';
+        core_elements['day'].innerHTML += output + '<br>';
         daylight_passed += 1;
 
         if(daylight_passed < core_storage_data['day-events']){
@@ -197,7 +197,7 @@ function day_event(){
             resources['food']['bonus'] = 0;
         }
 
-        document.getElementById('start-day').innerHTML = resources['people']['amount'] > 0
+        core_elements['start-day'].innerHTML = resources['people']['amount'] > 0
           ? start_new_day
           : 'Your castle has fallen.<br><button onclick=new_game() type=button>Start Over</button>';
     }
@@ -205,10 +205,10 @@ function day_event(){
     resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
 
     for(const resource in resources){
-        document.getElementById(resource).textContent = resources[resource]['amount'];
-        document.getElementById(resource + '-bonus').textContent = (resources[resource]['bonus'] > 0 ? '+' : '') + resources[resource]['bonus'];
+        core_elements[resource].textContent = resources[resource]['amount'];
+        core_elements[resource + '-bonus'].textContent = (resources[resource]['bonus'] > 0 ? '+' : '') + resources[resource]['bonus'];
     }
-    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
+    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
 }
 
 function delete_people(count){
@@ -220,26 +220,26 @@ function delete_people(count){
             resources['people']['bonus'] -= 1;
             resources['people']['workers'] -= 1;
 
-            document.getElementById('people-bonus').textContent = resources['people']['workers'];
-            document.getElementById('people-workers').textContent = resources['people']['workers'];
+            core_elements['people-bonus'].textContent = resources['people']['workers'];
+            core_elements['people-workers'].textContent = resources['people']['workers'];
 
         }else if(resources['stone']['workers'] > 0){
             resources['stone']['bonus'] -= 1;
             resources['stone']['workers'] -= 1;
 
-            document.getElementById('stone-bonus').textContent = resources['stone']['workers'];
-            document.getElementById('stone-workers').textContent = resources['stone']['workers'];
+            core_elements['stone-bonus'].textContent = resources['stone']['workers'];
+            core_elements['stone-workers'].textContent = resources['stone']['workers'];
 
         }else if(resources['gold']['workers'] > 0){
             resources['gold']['bonus'] -= 1;
             resources['gold']['workers'] -= 1;
 
-            document.getElementById('gold-bonus').textContent = resources['gold']['workers'];
-            document.getElementById('gold-workers').textContent = resources['gold']['workers'];
+            core_elements['gold-bonus'].textContent = resources['gold']['workers'];
+            core_elements['gold-workers'].textContent = resources['gold']['workers'];
 
         }else{
             resources['food']['workers'] -= 1;
-            document.getElementById('food-workers').textContent = resources['food']['workers'];
+            core_elements['food-workers'].textContent = resources['food']['workers'];
         }
     }while(count--);
 }
@@ -272,12 +272,18 @@ function new_game(){
             + '<button onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button>—</button>';
     }
 
-    document.getElementById('day').textContent = '';
-    document.getElementById('start-day').innerHTML = start_new_day;
-    document.getElementById('tbody').innerHTML = tbody;
+    core_elements['day'].textContent = '';
+    core_elements['start-day'].innerHTML = start_new_day;
+    core_elements['tbody'].innerHTML = tbody;
+
+    for(const resource in resource_defaults){
+        core_elements[resource] = document.getElementById(resource);
+        core_elements[resource + '-bonus'] = document.getElementById(resource + '-bonus');
+        core_elements[resource + '-workers'] = document.getElementById(resource + '-workers');
+    }
 
     resources['people']['unemployed'] = resources['people']['amount'];
-    document.getElementById('unemployed-workers').textContent = resources['people']['unemployed'];
+    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
 }
 
 function repo_init(){
@@ -321,6 +327,24 @@ function repo_init(){
       'storage-menu': '<table><tr><td><input class=mini id=day-event-duration min=1 step=any type=number><td>Event Duration'
         + '<tr><td><input class=mini id=day-events min=1 step=any type=number><td>Events/Day</table>',
       'title': 'Hrad.htm',
+      'ui-elements': [
+        'day',
+        'food',
+        'food-bonus',
+        'food-workers',
+        'gold',
+        'gold-bonus',
+        'gold-workers',
+        'people',
+        'people-bonus',
+        'people-workers',
+        'start-day',
+        'stone',
+        'stone-bonus',
+        'stone-workers',
+        'tbody',
+        'unemployed-workers',
+      ],
     });
 
     core_storage_update();
