@@ -289,8 +289,8 @@ function new_game(){
 function repo_init(){
     core_repo_init({
       'beforeunload': {
-        'todo': function(){
-            return 'Game does not yet save.';
+        'todo': function(event){
+            event.preventDefault();
         },
       },
       'globals': {
