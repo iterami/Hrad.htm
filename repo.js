@@ -2,6 +2,10 @@
 
 // Required args: type
 function alter_workers(args){
+    if(daylight_passed > 0){
+        return;
+    }
+
     args = core_args({
       'args': args,
       'defaults': {
@@ -9,39 +13,29 @@ function alter_workers(args){
       },
     });
 
-    if(daylight_passed > 0
-      || args['amount'] > resources['people']['unemployed']){
+    if(args['amount'] > core_storage_data['unemployed-workers']){
         return;
     }
 
-    if(resources[args['type']]['workers'] > 0
+    if(core_storage_data[args['type'] + '-workers'] > 0
       || args['amount'] > 0){
-        const multiplier = resource_defaults[args['type']]['multiplier'] || 1;
-
-        resources['people']['unemployed'] -= args['amount'];
-        resources[args['type']]['bonus'] += args['amount'] * multiplier;
-        resources[args['type']]['workers'] += args['amount'];
+        core_storage_data['unemployed-workers'] -= args['amount'];
+        core_storage_data[args['type'] + '-bonus'] += args['type'] === 'food'
+          ? args['amount'] * 2
+          : args['amount'];
+        core_storage_data[args['type'] + '-workers'] += args['amount'];
 
     }else{
-        resources[args['type']]['workers'] = 0;
+        core_storage_data[args['type'] + '-workers'] = 0;
     }
 
-    core_elements[args['type'] + '-bonus'].textContent =
-      (resources[args['type']]['bonus'] > 0 ? '+' : '') + resources[args['type']]['bonus'];
-    core_elements[args['type'] + '-workers'].textContent = resources[args['type']]['workers'];
-
-    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
+    core_storage_update();
 }
 
 function day_event(){
-    if(daylight_passed < core_storage_data['day-events']){
-        if(daylight_passed === 0){
-            core_elements['day'].textContent = '';
-            core_elements['start-day'].textContent = '';
-        }
-
+    if(daylight_passed < core_storage_data['day-events']
+      && core_storage_data['people'] > 0){
         const event = Math.random();
-        let event_result = 0;
         let output = '';
 
         // No event.
@@ -50,89 +44,89 @@ function day_event(){
 
         // Food event.
         }else if(event < .78){
-            event_result = core_random_integer({
+            const result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
                 output = 'Bugs! -';
-                resources['food']['amount'] -= event_result;
+                core_storage_data['food'] -= result;
 
-                if(resources['food']['amount'] < 0){
-                    resources['gold']['amount'] += resources['food']['amount'] * 2;
-                    resources['food']['amount'] = 0;
+                if(core_storage_data['food'] < 0){
+                    core_storage_data['gold'] += core_storage_data['food'] * 2;
+                    core_storage_data['food'] = 0;
                 }
 
             }else{
                 output = 'Rain! +';
-                resources['food']['amount'] += event_result;
+                core_storage_data['food'] += result;
             }
 
-            output += event_result + ' Food';
+            output += result + ' Food';
 
         // Gold event.
         }else if(event < .84){
-            event_result = core_random_integer({
+            const result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
                 output = 'Thieves! -';
-                resources['gold']['amount'] -= event_result;
+                core_storage_data['gold'] -= result;
 
             }else{
                 output = 'Mining! +';
-                resources['gold']['amount'] += event_result;
+                core_storage_data['gold'] += result;
             }
 
-            output += event_result + ' Gold';
+            output += result + ' Gold';
 
         // Stone event.
         }else if(event < .9){
-            event_result = core_random_integer({
+            const result = core_random_integer({
               'max': 2,
             }) + 1;
 
             if(core_random_boolean()){
                 output = 'Repair! -';
-                resources['stone']['amount'] -= event_result;
+                core_storage_data['stone'] -= result;
 
-                if(resources['stone']['amount'] < 0){
-                    resources['gold']['amount'] += resources['stone']['amount'] * 2;
-                    resources['stone']['amount'] = 0;
+                if(core_storage_data['stone'] < 0){
+                    core_storage_data['gold'] += core_storage_data['stone'] * 2;
+                    core_storage_data['stone'] = 0;
                 }
 
             }else{
-                resources['stone']['amount'] += event_result;
+                core_storage_data['stone'] += result;
                 output = 'Mining! +';
             }
 
-            output += event_result + ' Stone';
+            output += result + ' Stone';
 
         // Population event.
         }else if(event < .96){
             if(core_random_boolean()){
                 output = 'Sickness! -';
-                if(resources['people']['amount'] > 0){
-                    resources['people']['amount'] -= 1;
-                    delete_people(0);
+                if(core_storage_data['people'] > 0){
+                    core_storage_data['people'] -= 1;
+                    delete_people(1);
                 }
 
             }else{
                 output = 'Recruitment! +';
-                resources['people']['amount'] += 1;
-                resources['people']['unemployed'] += 1;
+                core_storage_data['people'] += 1;
+                core_storage_data['unemployed-workers'] += 1;
             }
 
             output += '1 Population';
 
         // Other events.
         }else if(event < .99){
-            event_result = core_random_integer({
+            const result = core_random_integer({
               'max': 2,
             });
 
-            if(event_result === 0){
+            if(result === 0){
                 output = 'Battle Event (TODO)';
 
             }else{
@@ -141,25 +135,25 @@ function day_event(){
 
         // Daily resource bonus event.
         }else{
-            event_result = core_random_integer({
+            const result = core_random_integer({
               'max': 4,
             });
 
-            if(event_result === 0){
+            if(result === 0){
                 output = 'Seeds! +1 Food/day';
-                resources['food']['bonus'] += 1;
+                core_storage_data['food-bonus'] += 1;
 
-            }else if(event_result === 1){
+            }else if(result === 1){
                 output = 'Veins! +1 Gold/day';
-                resources['gold']['bonus'] += 1;
+                core_storage_data['gold-bonus'] += 1;
 
-            }else if(event_result === 2){
+            }else if(result === 2){
                 output = 'Popularity! +1 Population/day';
-                resources['people']['bonus'] += 1;
+                core_storage_data['people-bonus'] += 1;
 
             }else{
                 output = 'Rocks! +1 Stone/day';
-                resources['stone']['bonus'] += 1;
+                core_storage_data['stone-bonus'] += 1;
             }
         }
 
@@ -177,144 +171,83 @@ function day_event(){
     }
 
     if(daylight_passed >= core_storage_data['day-events']){
+        core_interval_remove('day');
         daylight_passed = 0;
 
-        for(const resource in resources){
-            resources[resource]['amount'] += resources[resource]['bonus'];
-        }
-        resources['people']['unemployed'] += resources['people']['bonus'];
+        core_storage_data['food'] += core_storage_data['food-bonus'];
+        core_storage_data['gold'] += core_storage_data['gold-bonus'];
+        core_storage_data['people'] += core_storage_data['people-bonus'];
+        core_storage_data['stone'] += core_storage_data['stone-bonus'];
+        core_storage_data['unemployed-workers'] += core_storage_data['people-bonus'];
 
-        if(resources['food']['amount'] + resources['food']['bonus'] < 0){
-            delete_people(resources['people']['amount'] - 1);
-            resources['people']['amount'] -=
-              resources['people']['amount'] - (resources['food']['amount'] + resources['food']['bonus']);
+        if(core_storage_data['food'] + core_storage_data['food-bonus'] < 0){
+            delete_people(core_storage_data['people']);
+            core_storage_data['people'] -=
+              core_storage_data['people'] - (core_storage_data['food'] + core_storage_data['food-bonus']);
 
-            if(resources['people']['amount'] < 0){
-                resources['people']['amount'] = 0;
+            if(core_storage_data['people'] < 0){
+                core_storage_data['people'] = 0;
             }
 
-            resources['food']['amount'] = 0;
-            resources['food']['bonus'] = 0;
+            core_storage_data['food'] = 0;
+            core_storage_data['food-bonus'] = 0;
         }
-
-        core_elements['start-day'].innerHTML = resources['people']['amount'] > 0
-          ? start_new_day
-          : 'Your castle has fallen.<br><button onclick=new_game() type=button>Start Over</button>';
     }
 
-    resources['food']['bonus'] = resources['food']['workers'] * 2 - resources['people']['amount'];
-
-    for(const resource in resources){
-        core_elements[resource].textContent = resources[resource]['amount'];
-        core_elements[resource + '-bonus'].textContent = (resources[resource]['bonus'] > 0 ? '+' : '') + resources[resource]['bonus'];
+    core_storage_data['food-bonus'] = core_storage_data['food-workers'] * 2 - core_storage_data['people'];
+    if(core_storage_data['people'] <= 0){
+        core_elements['day'].innerHTML += 'Your hrad has fallen...';
     }
-    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
+
+    core_storage_update();
 }
 
 function delete_people(count){
-    do{
-        if(resources['people']['unemployed'] > 0){
-            resources['people']['unemployed'] -= 1;
+    for(let i = 0; i < count; i++){
+        if(core_storage_data['unemployed-workers'] > 0){
+            core_storage_data['unemployed-workers'] -= 1;
 
-        }else if(resources['people']['workers'] > 0){
-            resources['people']['bonus'] -= 1;
-            resources['people']['workers'] -= 1;
+        }else if(core_storage_data['people-workers'] > 0){
+            core_storage_data['people-bonus'] -= 1;
+            core_storage_data['people-workers'] -= 1;
 
-            core_elements['people-bonus'].textContent = resources['people']['workers'];
-            core_elements['people-workers'].textContent = resources['people']['workers'];
+        }else if(core_storage_data['stone-workers'] > 0){
+            core_storage_data['stone-bonus'] -= 1;
+            core_storage_data['stone-workers'] -= 1;
 
-        }else if(resources['stone']['workers'] > 0){
-            resources['stone']['bonus'] -= 1;
-            resources['stone']['workers'] -= 1;
-
-            core_elements['stone-bonus'].textContent = resources['stone']['workers'];
-            core_elements['stone-workers'].textContent = resources['stone']['workers'];
-
-        }else if(resources['gold']['workers'] > 0){
-            resources['gold']['bonus'] -= 1;
-            resources['gold']['workers'] -= 1;
-
-            core_elements['gold-bonus'].textContent = resources['gold']['workers'];
-            core_elements['gold-workers'].textContent = resources['gold']['workers'];
+        }else if(core_storage_data['gold-workers'] > 0){
+            core_storage_data['gold-bonus'] -= 1;
+            core_storage_data['gold-workers'] -= 1;
 
         }else{
-            resources['food']['workers'] -= 1;
-            core_elements['food-workers'].textContent = resources['food']['workers'];
+            core_storage_data['food-workers'] -= 1;
         }
-    }while(count--);
+    }
 }
 
 function new_day(){
-    core_storage_save([
-      'day-event-duration',
-      'day-events',
-    ]);
-
-    day_event();
-}
-
-function new_game(){
-    daylight_passed = 0;
-
-    let tbody = '';
-    for(const resource in resource_defaults){
-        resources[resource] = resources[resource] || {};
-
-        resources[resource]['amount'] = resource_defaults[resource]['amount'] || 0;
-        resources[resource]['bonus'] = resource_defaults[resource]['bonus'] || 0;
-        resources[resource]['workers'] = resource_defaults[resource]['workers'] || 0;
-
-        tbody += '<tr><td>' + resource
-          + '<td id=' + resource + '>' + resources[resource]['amount']
-          + '<td id=' + resource + '-bonus>' + resources[resource]['bonus']
-          + '<td><button onclick="alter_workers({type:\'' + resource + '\',})" type=button>+</button>'
-            + ' <span id=' + resource + '-workers>' + resources[resource]['workers'] + '</span> '
-            + '<button onclick="alter_workers({amount:-1,type:\'' + resource + '\',})" type=button>—</button>';
+    if(daylight_passed !== 0
+      || core_storage_data['people'] <= 0){
+        return;
     }
 
     core_elements['day'].textContent = '';
-    core_elements['start-day'].innerHTML = start_new_day;
-    core_elements['tbody'].innerHTML = tbody;
-
-    for(const resource in resource_defaults){
-        core_elements[resource] = document.getElementById(resource);
-        core_elements[resource + '-bonus'] = document.getElementById(resource + '-bonus');
-        core_elements[resource + '-workers'] = document.getElementById(resource + '-workers');
-    }
-
-    resources['people']['unemployed'] = resources['people']['amount'];
-    core_elements['unemployed-workers'].textContent = resources['people']['unemployed'];
+    day_event();
 }
 
 function repo_init(){
     core_repo_init({
       'beforeunload': {
-        'todo': function(event){
-            event.preventDefault();
-        },
+        'todo': core_storage_save,
       },
       'globals': {
         'daylight_passed': 0,
-        'resource_defaults': {
-          'food': {
-            'amount': 10,
-            'bonus': -1,
-            'multiplier': 2,
-          },
-          'gold': {},
-          'people': {
-            'amount': 1,
-          },
-          'stone': {},
-        },
-        'resources': {},
-        'start_new_day': '<button onclick=new_day() type=button>Start New Day [ENTER]</button>',
       },
       'keybinds': {
         'Enter': {
           'todo': function(){
               if(daylight_passed === 0
-                && resources['people']['amount'] > 0){
+                && core_storage_data['people'] > 0){
                   new_day();
               }
           },
@@ -323,30 +256,26 @@ function repo_init(){
       'storage': {
         'day-event-duration': 500,
         'day-events': 10,
+        'food': 10,
+        'food-bonus': -1,
+        'food-workers': 0,
+        'gold': 0,
+        'gold-bonus': 0,
+        'gold-workers': 0,
+        'people': 1,
+        'people-bonus': 0,
+        'people-workers': 0,
+        'stone': 0,
+        'stone-bonus': 0,
+        'stone-workers': 0,
+        'unemployed-workers': 1,
       },
       'storage-menu': '<table><tr><td><input class=mini id=day-event-duration min=1 step=any type=number><td>Event Duration'
         + '<tr><td><input class=mini id=day-events min=1 step=1 type=number><td>Events/Day</table>',
       'title': 'Hrad.htm',
       'ui-elements': [
         'day',
-        'food',
-        'food-bonus',
-        'food-workers',
-        'gold',
-        'gold-bonus',
-        'gold-workers',
-        'people',
-        'people-bonus',
-        'people-workers',
-        'start-day',
-        'stone',
-        'stone-bonus',
-        'stone-workers',
-        'tbody',
         'unemployed-workers',
       ],
     });
-
-    core_storage_update();
-    new_game();
 }

@@ -5,15 +5,33 @@
 <link href=../common/css/core.css rel=stylesheet>
 
 <table>
-  <thead>
-    <tr class=header>
-      <td>Resource
-      <td>Amount
-      <td>Bonus/Day
-      <td>Workers (<span id=unemployed-workers></span>)
-  <tbody id=tbody>
+  <tr class=header>
+    <td>Resource
+    <td>Amount
+    <td>Bonus/Day
+    <td>Workers (<span id=unemployed-workers></span>)
+  <tr>
+    <td>Food
+    <td id=food>
+    <td id=food-bonus>
+    <td><button onclick="alter_workers({type:'food'})" type=button>+</button> <span id=food-workers></span> <button onclick="alter_workers({amount:-1,type:'food'})" type=button>—</button>
+  <tr>
+    <td>Gold
+    <td id=gold>
+    <td id=gold-bonus>
+    <td><button onclick="alter_workers({type:'gold'})" type=button>+</button> <span id=gold-workers></span> <button onclick="alter_workers({amount:-1,type:'gold'})" type=button>—</button>
+  <tr>
+    <td>People
+    <td id=people>
+    <td id=people-bonus>
+    <td><button onclick="alter_workers({type:'people'})" type=button>+</button> <span id=people-workers></span> <button onclick="alter_workers({amount:-1,type:'people'})" type=button>—</button>
+  <tr>
+    <td>Stone
+    <td id=stone>
+    <td id=stone-bonus>
+    <td><button onclick="alter_workers({type:'stone'})" type=button>+</button> <span id=stone-workers></span> <button onclick="alter_workers({amount:-1,type:'stone'})" type=button>—</button>
 </table>
-<div id=start-day></div>
+<button onclick=new_day() type=button>Start New Day [ENTER]</button>
 <div id=day></div>
 
 <script src=../common/js/core.js></script>
