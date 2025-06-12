@@ -44,9 +44,7 @@ function day_event(){
 
         // Food event.
         }else if(event < .78){
-            const result = core_random_integer({
-              'max': 2,
-            }) + 1;
+            const result = core_random_integer(2) + 1;
 
             if(core_random_boolean()){
                 output = 'Bugs! -';
@@ -66,9 +64,7 @@ function day_event(){
 
         // Gold event.
         }else if(event < .84){
-            const result = core_random_integer({
-              'max': 2,
-            }) + 1;
+            const result = core_random_integer(2) + 1;
 
             if(core_random_boolean()){
                 output = 'Thieves! -';
@@ -83,9 +79,7 @@ function day_event(){
 
         // Stone event.
         }else if(event < .9){
-            const result = core_random_integer({
-              'max': 2,
-            }) + 1;
+            const result = core_random_integer(2) + 1;
 
             if(core_random_boolean()){
                 output = 'Repair! -';
@@ -122,9 +116,7 @@ function day_event(){
 
         // Other events.
         }else if(event < .99){
-            const result = core_random_integer({
-              'max': 2,
-            });
+            const result = core_random_integer(2);
 
             if(result === 0){
                 output = 'Battle Event (TODO)';
@@ -135,9 +127,7 @@ function day_event(){
 
         // Daily resource bonus event.
         }else{
-            const result = core_random_integer({
-              'max': 4,
-            });
+            const result = core_random_integer(4);
 
             if(result === 0){
                 output = 'Seeds! +1 Food/day';
