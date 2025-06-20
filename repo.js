@@ -263,7 +263,7 @@ function repo_init(){
       'storage-menu': '<table><tr><td><input class=mini id=day_event_duration min=1 step=any type=number><td>Event Duration'
         + '<tr><td><input class=mini id=day_events min=1 step=1 type=number><td>Events/Day</table>',
       'title': 'Hrad.htm',
-      'ui-elements': [
+      'ui_elements': [
         'day',
         'unemployed_workers',
       ],
