@@ -260,7 +260,7 @@ function repo_init(){
         'stone_workers': 0,
         'unemployed_workers': 1,
       },
-      'storage-menu': '<table><tr><td><input class=mini id=day_event_duration min=1 step=any type=number><td>Event Duration'
+      'storage_menu': '<table><tr><td><input class=mini id=day_event_duration min=1 step=any type=number><td>Event Duration'
         + '<tr><td><input class=mini id=day_events min=1 step=1 type=number><td>Events/Day</table>',
       'title': 'Hrad.htm',
       'ui_elements': [
