@@ -235,7 +235,7 @@ function repo_init(){
       },
       'keybinds': {
         'Enter': {
-          'todo': function(){
+          'down': function(){
               if(daylight_passed === 0
                 && core_storage_data.people > 0){
                   new_day();
