@@ -161,7 +161,7 @@ function day_event(){
     }
 
     if(daylight_passed >= core_storage_data.day_events){
-        core_interval_remove('day');
+        core_interval_pause('day');
         daylight_passed = 0;
 
         core_storage_data.food += core_storage_data.food_bonus;
