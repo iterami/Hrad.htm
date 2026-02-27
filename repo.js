@@ -1,32 +1,27 @@
 'use strict';
 
-// Required args: type
-function alter_workers(args){
+function alter_workers({
+  amount = 1,
+  type,
+} = {}){
     if(daylight_passed > 0){
         return;
     }
 
-    args = core_args({
-      'args': args,
-      'defaults': {
-        'amount': 1,
-      },
-    });
-
-    if(args.amount > core_storage_data.unemployed_workers){
+    if(amount > core_storage_data.unemployed_workers){
         return;
     }
 
-    if(core_storage_data[args.type + '_workers'] > 0
-      || args.amount > 0){
-        core_storage_data.unemployed_workers -= args.amount;
-        core_storage_data[args.type + '_bonus'] += args.type === 'food'
-          ? args.amount * 2
-          : args.amount;
-        core_storage_data[args.type + '_workers'] += args.amount;
+    if(core_storage_data[type + '_workers'] > 0
+      || amount > 0){
+        core_storage_data.unemployed_workers -= amount;
+        core_storage_data[type + '_bonus'] += type === 'food'
+          ? amount * 2
+          : amount;
+        core_storage_data[type + '_workers'] += amount;
 
     }else{
-        core_storage_data[args.type + '_workers'] = 0;
+        core_storage_data[type + '_workers'] = 0;
     }
 
     core_storage_update();
