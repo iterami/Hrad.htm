@@ -222,9 +222,7 @@ function new_day(){
 
 function repo_init(){
     core_repo_init({
-      'beforeunload': {
-        'todo': core_storage_save,
-      },
+      'beforeunload': core_storage_save,
       'globals': {
         'daylight_passed': 0,
       },
