@@ -177,6 +177,8 @@ function day_event(){
             core_storage_data.food = 0;
             core_storage_data.food_bonus = 0;
         }
+
+        core_storage_save();
     }
 
     core_storage_data.food_bonus = core_storage_data.food_workers * 2 - core_storage_data.people;
@@ -222,7 +224,6 @@ function new_day(){
 
 function repo_init(){
     core_repo_init({
-      'beforeunload': core_storage_save,
       'globals': {
         'daylight_passed': 0,
       },
